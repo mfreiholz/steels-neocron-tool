@@ -33,6 +33,7 @@ struct opts_t
 {
 	std::string filepath;
 	bool watch = false;
+	std::chrono::milliseconds watchInterval = std::chrono::milliseconds(500);
 };
 
 /*
@@ -41,6 +42,7 @@ struct opts_t
 
 	Examples:
 	damage-hit-logger.exe "D:/Projects/NeocronLogParser/Mr Steel_01.log"
+	damage-hit-logger.exe "D:/Projects/NeocronLogParser/Infinite.log"
 */
 int main(int argc, char** argv)
 {
@@ -64,14 +66,20 @@ int main(int argc, char** argv)
 	std::cout << "file=" << opts.filepath << ";" << std::endl;
 	std::cout << "----------------------------" << std::endl;
 
+	int counter = 0;
 	Parser parser(
 		// on character system info
 		[]() {
 		},
 		// on damage hit
-		[](std::unique_ptr<DamageHit> v)
+		[&counter](std::unique_ptr<DamageHit> v)
 		{
-			std::cout << "DamageHit: " << v->hitZone << std::endl;
+			std::cout
+				<< "hit -> "
+				<< "index=" << counter++ << "; "
+				<< "hit-zone=" << v->hitZone << "; "
+				<< "damage-parts=" << v->damageParts.size() << "; "
+				<< std::endl;
 		}
 	);
 
@@ -88,7 +96,7 @@ int main(int argc, char** argv)
 		else
 			in.seekg(offset);
 		offset = fileSize;
-		std::cout << "offset: " << offset << std::endl;
+		//std::cout << "offset: " << offset << std::endl;
 
 		parser.parseStream(in);
 		in.close();
@@ -98,8 +106,8 @@ int main(int argc, char** argv)
 			stop = true;
 			break;
 		}
-		std::cout << "Wait 1s for log file updates..." << std::endl;
-		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+		//std::cout << "Wait 1s for log file updates..." << std::endl;
+		std::this_thread::sleep_for(opts.watchInterval);
 	}
 	return 0;
 }
