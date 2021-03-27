@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ResistSource
+enum class ResistSource : int
 {
 	Psi,
 	Shield,

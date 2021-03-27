@@ -1,0 +1,82 @@
+#pragma once
+#include <QList>
+#include <QObject>
+#include <QAbstractListModel>
+#include <QDebug>
+#include <ncloglib/DamageLog.hpp>
+#include "DamageHitInfo.hpp"
+
+class DamageHitInfoListModel : public QAbstractListModel
+{
+	Q_OBJECT
+	QList<DamageHitInfo*> _list;
+
+public:
+	enum Roles
+	{
+		ObjectRole = Qt::UserRole + 1,
+		TitleRole
+	};
+
+	DamageHitInfoListModel(QObject* parent = nullptr)
+		: QAbstractListModel(parent)
+	{}
+
+	~DamageHitInfoListModel() override = default;
+
+	Q_INVOKABLE void add(DamageHit hit)
+	{
+		beginInsertRows(QModelIndex(), _list.count(), _list.count());
+		auto info = new DamageHitInfo(this);
+		info->setDamageHit(hit);
+		_list.append(info);
+		endInsertRows();
+	}
+
+	Q_INVOKABLE DamageHitInfo* get(int index) const
+	{
+		return _list.at(index);
+	}
+
+	QHash<int, QByteArray> roleNames() const
+	{
+		QHash<int, QByteArray> roles;
+		roles[ObjectRole] = "object";
+		roles[TitleRole] = "title";
+		return roles;
+	}
+
+	int rowCount(const QModelIndex& parent = QModelIndex()) const override
+	{
+		return _list.count();
+	}
+
+	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const
+	{
+		if (index.row() < 0 || index.row() >= _list.count())
+		{
+			return QVariant();
+		}
+		const auto hit = _list.at(index.row());
+		switch (role)
+		{
+			case ObjectRole:
+			{
+				return QVariant::fromValue(hit);
+			}
+			case TitleRole:
+			{
+				return QStringLiteral("Hit #%1, Zone=%2; DamageTypes=%3")
+					.arg(index.row() + 1, 4, 10, QLatin1Char('0'))
+					.arg(hit->getHitZone())
+					.arg(hit->getDamageHit().damageParts.size());
+			}
+		}
+		return QVariant();
+	}
+
+	static void declareQtTypes()
+	{
+		qmlRegisterType<DamageHitInfoListModel>("mf.nc.DamageHitInfoListModel", 1, 0, "DamageHitInfoListModel");
+	}
+};

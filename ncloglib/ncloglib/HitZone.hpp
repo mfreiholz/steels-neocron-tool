@@ -8,7 +8,7 @@ enum class HitZone
 	Legs
 };
 
-HitZone HitZoneFromString(const std::string& s)
+static HitZone HitZoneFromString(const std::string& s)
 {
 	if (s.compare("ALL") == 0)
 	{

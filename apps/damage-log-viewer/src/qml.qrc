@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qmldir</file>
+        <file>qtquickcontrols2.conf</file>
+    </qresource>
+    <qresource prefix="/qml">
+        <file>main.qml</file>
+        <file>pages/DamageLogViewPage.qml</file>
+        <file>components/PlayerHitZones.qml</file>
+        <file>components/DamageHitInfoTable.qml</file>
+    </qresource>
+</RCC>
