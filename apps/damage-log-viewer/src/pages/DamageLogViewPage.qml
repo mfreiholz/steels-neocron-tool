@@ -2,12 +2,10 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Dialogs 1.3
-import Qt.labs.qmlmodels 1.0
-
+import QtQuick.Controls.Universal 2.12
 import mf.nc.DamageHitInfo 1.0
 import mf.nc.DamageHitInfoListModel 1.0
 import mf.nc.DamageLogLoader 1.0
-
 import "qrc:/qml/components"
 
 Item {
@@ -17,6 +15,7 @@ Item {
 	property bool autoReload
 	property QtObject selectedDamageHitInfo
 
+	focus: true
 	Keys.onUpPressed: listView.decrementCurrentIndex()
 	Keys.onDownPressed: listView.incrementCurrentIndex()
 
@@ -71,11 +70,6 @@ Item {
 					Layout.fillWidth: true
 					title: "Details"
 
-//					Loader {
-//						id: damageHitInfoLoader
-//						anchors.fill: parent
-//					}
-
 					DamageHitInfoTable {
 						id: damageHitInfoTable
 						anchors.fill: parent
@@ -99,6 +93,7 @@ Item {
 						onCurrentIndexChanged: {
 							var currObj = damageHitInfoModel.get(currentIndex)
 							damageHitInfoTable.damageHitInfo = currObj
+							playerHitZones.hitZone = currObj.hitZone
 							//damageHitInfoLoader.setSource("qrc:/qml/components/DamageHitInfo.qml", { damageHitInfo: currObj })
 						}
 						delegate: RowLayout {
@@ -116,7 +111,7 @@ Item {
 							}
 						}
 						highlight: Rectangle {
-							color: "black"
+							color: Universal.accent
 						}
 					}
 				}
@@ -129,6 +124,7 @@ Item {
 			Layout.preferredWidth: 0.25 * parent.width
 
 			PlayerHitZones {
+				id: playerHitZones
 				height: parent.height
 				width: parent.width
 			}

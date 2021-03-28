@@ -15,7 +15,9 @@ public:
 		ByShields,
 		ByArmor,
 		BySkills,
-		RowResult
+		ResultDamage,
+		ResultReduction,
+		ResultPercentage
 	};
 
 	DamageHitInfoTableModel(QObject* parent = nullptr)
@@ -27,14 +29,18 @@ public:
 			<< ColumnInfo{ DamageTypeInfo::Type::XRay, QStringLiteral("XRay") }
 			<< ColumnInfo{ DamageTypeInfo::Type::Poison, QStringLiteral("Poison") }
 			<< ColumnInfo{ DamageTypeInfo::Type::Force, QStringLiteral("Force") }
-			<< ColumnInfo{ DamageTypeInfo::Type::Pierce, QStringLiteral("Pierce") };
+			<< ColumnInfo{ DamageTypeInfo::Type::Pierce, QStringLiteral("Pierce") }
+		;
 		_rowInfos
-			<< RowInfo { Rows::Damage, QStringLiteral("Damage") }
+			<< RowInfo{ Rows::Damage, QStringLiteral("Damage") }
 			<< RowInfo{ Rows::ByPsi, QStringLiteral("PSI (%)") }
 			<< RowInfo{ Rows::ByShields, QStringLiteral("Shields (%)") }
 			<< RowInfo{ Rows::ByArmor, QStringLiteral("Armor (%)") }
 			<< RowInfo{ Rows::BySkills, QStringLiteral("Skills (%)") }
-			<< RowInfo{ Rows::RowResult, QStringLiteral("Result") };
+			<< RowInfo{ Rows::ResultDamage, QStringLiteral("Result") }
+			<< RowInfo{ Rows::ResultReduction, QStringLiteral("Result Reduction") }
+			<< RowInfo{ Rows::ResultPercentage, QStringLiteral("Result (%)") }
+		;
 	}
 
 	~DamageHitInfoTableModel() override
@@ -113,9 +119,17 @@ public:
 				auto it = _dmgHitInfo->findResistSourceDetail(dmgPartOpt.value()->details, DamageTypeInfo::ResistSource::Skill);
 				return !it ? QVariant() : it.value()->reductionPercentage;
 			}
-			case Rows::RowResult:
+			case Rows::ResultDamage:
 			{
 				return dmgPartOpt.value()->result.value;
+			}
+			case Rows::ResultReduction:
+			{
+				return dmgPartOpt.value()->result.reduction;
+			}
+			case Rows::ResultPercentage:
+			{
+				return dmgPartOpt.value()->result.reductionPercentage;
 			}
 		}
 		return QVariant();

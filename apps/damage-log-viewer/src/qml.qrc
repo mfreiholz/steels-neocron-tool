@@ -2,9 +2,14 @@
     <qresource prefix="/">
         <file>qmldir</file>
         <file>qtquickcontrols2.conf</file>
+        <file>res/assessment-white-24dp.svg</file>
+        <file>res/folder_open-white-24dp.svg</file>
+        <file>res/arrow_back_ios_new-white-24dp.svg</file>
+        <file>res/info-white-24dp.svg</file>
     </qresource>
     <qresource prefix="/qml">
         <file>main.qml</file>
+        <file>AppHeader.qml</file>
         <file>pages/DamageLogViewPage.qml</file>
         <file>components/PlayerHitZones.qml</file>
         <file>components/DamageHitInfoTable.qml</file>

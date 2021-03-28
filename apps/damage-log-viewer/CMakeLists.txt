@@ -10,8 +10,20 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Multimedia LinguistTools REQUIRED)
 # Qt End
 
+if(WIN32)
+	if(CMAKE_BUILD_TYPE MATCHES RELEASE)
+		set(GUI_TYPE WIN32)
+	endif()
+endif()
+if(APPLE)
+	set(GUI_TYPE MACOSX_BUNDLE)
+endif()
+
 add_executable(
 	damage-log-viewer
+
+	${GUI_TYPE}
+
 	src/qml.qrc
 	src/main.cpp
 
