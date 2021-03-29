@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Universal 2.12
-import mf.nc.DamageTypeInfo 1.0
+
 import mf.nc.DamageHitInfo 1.0
 import mf.nc.DamageHitInfoTableModel 1.0
 
@@ -15,7 +15,7 @@ Item {
 		console.log("DamageHitInfo::onDamageHitInfoChanged() ", damageHitInfo)
 		damageHitInfoModel.setDamageHitInfo(damageHitInfo)
 		if (damageHitInfo) {
-			console.log("hitZone=", damageHitInfo.hitZone)
+			console.log("hitZone=", damageHitInfo.hitZones)
 			console.log("types=", damageHitInfo.damageTypes)
 		}
 	}
@@ -55,6 +55,9 @@ Item {
 				return h
 			}
 			onWidthChanged: {
+				tableView.forceLayout()
+			}
+			onHeightChanged: {
 				tableView.forceLayout()
 			}
 			delegate: Rectangle {

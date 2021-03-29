@@ -1,12 +1,8 @@
 # Qt Begin
-set(CMAKE_PREFIX_PATH "D:/Qt/5.15.1/msvc2019_64")
-#LIST(APPEND CMAKE_PROGRAM_PATH  "D:/Qt/5.15.1/msvc2019_64/bin")
-set(QT_VERSION_MAJOR 5)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-#find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Quick Multimedia LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Multimedia LinguistTools REQUIRED)
 # Qt End
 
@@ -29,6 +25,7 @@ add_executable(
 
 	src/App.hpp
 	src/DamageTypeInfo.hpp
+	src/HitZoneInfo.hpp
 	src/DamageHitInfo.hpp
 	src/LogReader.hpp
 

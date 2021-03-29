@@ -77,7 +77,6 @@ int main(int argc, char** argv)
 			std::cout
 				<< "hit -> "
 				<< "index=" << counter++ << "; "
-				<< "hit-zone=" << v->hitZone << "; "
 				<< "damage-parts=" << v->damageParts.size() << "; "
 				<< std::endl;
 		}

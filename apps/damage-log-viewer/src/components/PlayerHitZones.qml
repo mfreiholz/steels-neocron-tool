@@ -2,20 +2,34 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
+import mf.nc.Types 1.0
+
 Item {
 	id: root
 
-	property string hitZone: ""
+	property var hitZones: []
 	readonly property color textColor: "black"
 	readonly property color areaBackgroundColor: "#093d18"
 	readonly property color areaBorderColor: "#bbefb3"
 	readonly property color areaHighlightBackgroundColor: "#60c950"
 	readonly property color areaHighlightBorderColor: "#bbefb3"
 
-	onHitZoneChanged: {
-		headShape.color = (hitZone == "ALL" || hitZone == "HEAD") ? areaHighlightBackgroundColor : areaBackgroundColor
-		torsoShape.color = (hitZone == "ALL" || hitZone == "TORSO") ? areaHighlightBackgroundColor : areaBackgroundColor
-		legsShape.color = (hitZone == "ALL" || hitZone == "LEGS") ? areaHighlightBackgroundColor : areaBackgroundColor
+	onHitZonesChanged: {
+		console.log("onHitZonesChanged()", hitZones)
+		headShape.color = checkHighlight(HitZone.Head) ? areaHighlightBackgroundColor : areaBackgroundColor
+		torsoShape.color = checkHighlight(HitZone.Torso) ? areaHighlightBackgroundColor : areaBackgroundColor
+		legsShape.color = checkHighlight(HitZone.Legs) ? areaHighlightBackgroundColor : areaBackgroundColor
+	}
+
+	// @note We need to convert the "hitZone" values to Number, before we check.
+	// It seems to be a Qt bug that "HitZone.All" is a Number and not the type.
+	function checkHighlight(zone) {
+		for (var i = 0; i < hitZones.length; i++) {
+			if (Number(hitZones[i]) === HitZone.All || Number(hitZones[i]) === zone) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	ColumnLayout {

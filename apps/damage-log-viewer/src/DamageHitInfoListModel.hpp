@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QAbstractListModel>
 #include <QDebug>
-#include <ncloglib/DamageLog.hpp>
+#include <ncloglib/DamageHit.hpp>
 #include "DamageHitInfo.hpp"
 
 class DamageHitInfoListModel : public QAbstractListModel
@@ -66,10 +66,18 @@ public:
 			}
 			case TitleRole:
 			{
-				return QStringLiteral("Hit #%1, Zone=%2; DamageTypes=%3")
+				QStringList hitZones;
+				for (auto hz : hit->getHitZones())
+					hitZones.append(QMetaEnum::fromType<HitZoneInfo::HitZone>().valueToKey(static_cast<int>(hz)));
+
+				QStringList dmgTypes;
+				for (auto dt : hit->getDamageTypes())
+					dmgTypes.append(QMetaEnum::fromType<DamageTypeInfo::Type>().valueToKey(static_cast<int>(dt)));
+
+				return QStringLiteral("Hit #%1, Zones=%2; Types=%3")
 					.arg(index.row() + 1, 4, 10, QLatin1Char('0'))
-					.arg(hit->getHitZone())
-					.arg(hit->getDamageHit().damageParts.size());
+					.arg(hitZones.join(QChar(',')))
+					.arg(dmgTypes.join(QChar(',')));
 			}
 		}
 		return QVariant();

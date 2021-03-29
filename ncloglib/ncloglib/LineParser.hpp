@@ -1,7 +1,8 @@
-#pragma once
+#ifndef LINEPARSER_HPP
+#define LINEPARSER_HPP
+
 #include <string>
 #include <iostream>
-#include <array>
 
 class LineParser
 {
@@ -24,3 +25,5 @@ public:
 		return false;
 	}
 };
+
+#endif

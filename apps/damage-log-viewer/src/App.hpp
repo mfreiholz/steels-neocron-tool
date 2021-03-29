@@ -5,7 +5,7 @@
 #include <QUrl>
 #include <QGuiApplication>
 #include <QClipboard>
-#include <ncloglib/DamageLog.hpp>
+#include <ncloglib/DamageHit.hpp>
 
 class App : public QObject
 {

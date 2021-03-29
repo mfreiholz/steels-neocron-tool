@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include "App.hpp"
 #include "LogReader.hpp"
+#include "HitZoneInfo.hpp"
 #include "DamageTypeInfo.hpp"
 #include "DamageHitInfo.hpp"
 #include "DamageHitInfoListModel.hpp"
@@ -20,6 +21,7 @@ int main(int argc, char** argv)
 	qtapp.setApplicationVersion("1.0.0");
 
 	App myApp;
+	HitZoneInfo::declareQtTypes();
 	DamageTypeInfo::declareQtTypes();
 	DamageHitInfo::declareQtTypes();
 	DamageHitInfoListModel::declareQtTypes();

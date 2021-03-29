@@ -1,14 +1,9 @@
 #pragma once
 #include <vector>
-#include <iostream>
-#include "DamageType.hpp"
-#include "PlayerType.hpp"
-#include "HitZone.hpp"
-#include "ResistSource.hpp"
+#include <string>
 
 /*
 Local Player:Damage() - Damage processing statistics!
-
 Damage: 18.178 Target Feuer HitZone 3 - Part 0
 Damage: 12.724 (Reduction: 5.453 - 30.000 Percentage) - Damage caused by PSI
 Damage: 7.635 (Reduction: 10.543 - 57.998 Percentage) - Damage reduced by shield
@@ -39,7 +34,7 @@ public:
 		double resistanceCap = 0.840;
 	};
 
-	std::string hitZone;
+	int hitZone;
 	int partIndex = 0;
 	std::string damageType;
 	double value = 0.0;
@@ -50,7 +45,5 @@ public:
 class DamageHit
 {
 public:
-	PlayerType player = PlayerType::Local;
-	std::string hitZone;
 	std::vector<DamagePart> damageParts;
 };

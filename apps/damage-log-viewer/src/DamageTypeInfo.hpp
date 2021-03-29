@@ -9,10 +9,10 @@ class DamageTypeInfo : public QObject
 	Q_OBJECT
 
 public:
-	enum Type { Fire, Energy, XRay, Poison, Force, Pierce, UnknownDamageType };
+	enum class Type { Fire, Energy, XRay, Poison, Force, Pierce, UnknownDamageType };
 	Q_ENUM(Type)
 
-	enum ResistSource { Psi, Shield, Armor, Skill, UnknownResistSource };
+	enum class ResistSource { Psi, Shield, Armor, Skill, UnknownResistSource };
 	Q_ENUM(ResistSource)
 
 	DamageTypeInfo(QObject* parent = nullptr)
@@ -22,7 +22,8 @@ public:
 	static void declareQtTypes()
 	{
 		qRegisterMetaType<DamageTypeInfo::Type>();
-		qmlRegisterType<DamageTypeInfo>("mf.nc.DamageTypeInfo", 1, 0, "DamageTypeInfo");
+		qRegisterMetaType<DamageTypeInfo::ResistSource>();
+		qmlRegisterType<DamageTypeInfo>("mf.nc.Types", 1, 0, "DamageTypeInfo");
 	}
 
 	static Type typeFromString(const QString& typeString)
@@ -72,3 +73,4 @@ public:
 	}
 };
 Q_DECLARE_METATYPE(DamageTypeInfo::Type)
+Q_DECLARE_METATYPE(DamageTypeInfo::ResistSource)

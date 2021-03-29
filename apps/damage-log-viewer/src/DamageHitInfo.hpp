@@ -3,15 +3,16 @@
 #include <QObject>
 #include <QMetaType>
 #include <QQmlApplicationEngine>
-#include <ncloglib/DamageLog.hpp>
+#include <ncloglib/DamageHit.hpp>
 #include "DamageTypeInfo.hpp"
+#include "HitZoneInfo.hpp"
 
 // DamageHitInfo holds information about a single hit/shot/...
 class DamageHitInfo : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(QString hitZone READ getHitZone CONSTANT)
 	Q_PROPERTY(QList<DamageTypeInfo::Type> damageTypes READ getDamageTypes CONSTANT)
+	Q_PROPERTY(QList<HitZoneInfo::HitZone> hitZones READ getHitZones CONSTANT)
 
 public:
 	DamageHitInfo(QObject* parent = nullptr)
@@ -24,7 +25,6 @@ public:
 	void setDamageHit(const DamageHit& dmgHit)
 	{
 		_h = dmgHit;
-
 		for (size_t i = 0; i < _h.damageParts.size(); i++)
 		{
 			auto s = QString::fromStdString(_h.damageParts.at(i).damageType);
@@ -35,6 +35,10 @@ public:
 				continue;
 			}
 			_damageTypes.append(t);
+
+			auto hz = HitZoneInfo::hitZoneFromInt(_h.damageParts.at(i).hitZone);
+			if (!_hitZones.contains(hz))
+				_hitZones.append(hz);
 		}
 	}
 
@@ -43,9 +47,9 @@ public:
 		return _h;
 	}
 
-	QString getHitZone() const
+	QList<HitZoneInfo::HitZone> getHitZones() const
 	{
-		return QString::fromStdString(_h.hitZone);
+		return _hitZones;
 	}
 
 	QList<DamageTypeInfo::Type> getDamageTypes() const
@@ -90,11 +94,11 @@ public:
 	static void declareQtTypes()
 	{
 		qRegisterMetaType<DamageHitInfo*>();
-		qRegisterMetaType<DamageTypeInfo::Type>();
 		qmlRegisterType<DamageHitInfo>("mf.nc.DamageHitInfo", 1, 0, "DamageHitInfo");
 	}
 
 private:
 	DamageHit _h;
 	QList<DamageTypeInfo::Type> _damageTypes;
+	QList<HitZoneInfo::HitZone> _hitZones;
 };

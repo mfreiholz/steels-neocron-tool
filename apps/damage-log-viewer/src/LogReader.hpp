@@ -5,7 +5,7 @@
 #include <QMutex>
 #include <atomic>
 #include <ncloglib/Parser.hpp>
-#include <ncloglib/DamageLog.hpp>
+#include <ncloglib/DamageHit.hpp>
 #include "DamageHitInfo.hpp"
 
 class LogReader : public QThread

@@ -3,9 +3,10 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Dialogs 1.3
 import QtQuick.Controls.Universal 2.12
-import mf.nc.DamageHitInfo 1.0
+
 import mf.nc.DamageHitInfoListModel 1.0
 import mf.nc.DamageLogLoader 1.0
+
 import "qrc:/qml/components"
 
 Item {
@@ -93,8 +94,7 @@ Item {
 						onCurrentIndexChanged: {
 							var currObj = damageHitInfoModel.get(currentIndex)
 							damageHitInfoTable.damageHitInfo = currObj
-							playerHitZones.hitZone = currObj.hitZone
-							//damageHitInfoLoader.setSource("qrc:/qml/components/DamageHitInfo.qml", { damageHitInfo: currObj })
+							playerHitZones.hitZones = currObj.hitZones
 						}
 						delegate: RowLayout {
 							width: listView.width

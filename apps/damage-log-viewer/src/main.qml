@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.3
 import QtQuick.Controls.Universal 2.12
+
 import "qrc:/qml/pages"
 import "qrc:/qml"
 
