@@ -3,21 +3,29 @@
 #include <iostream>
 #include <QThread>
 #include <QMutex>
+#include <QWaitCondition>
+#include <QDeadlineTimer>
 #include <atomic>
 #include <ncloglib/Parser.hpp>
 #include <ncloglib/DamageHit.hpp>
 #include "DamageHitInfo.hpp"
 
+/*!
+	Reads from log file until the object is destroyed.
+	Caller can pause reading from file.
+*/
 class LogReader : public QThread
 {
 	Q_OBJECT
 	Q_PROPERTY(QString logFilePath READ getLogFilePath WRITE setLogFilePath NOTIFY logFilePathChanged)
-	Q_PROPERTY(bool watch READ getWatch WRITE setWatch NOTIFY watchChanged)
+	Q_PROPERTY(qint64 fileSize READ getFileSize NOTIFY fileSizeChanged)
+	Q_PROPERTY(bool paused READ isPaused WRITE setPause NOTIFY pausedChanged)
 
 public:
 	LogReader(QObject* parent = nullptr)
 		: QThread(parent)
 		, _stop(false)
+		, _paused(true)
 	{}
 
 	~LogReader() override
@@ -27,37 +35,52 @@ public:
 
 	QString getLogFilePath() const
 	{
+		QMutexLocker l(&_mutex);
 		return _logFilePath;
 	}
 
 	void setLogFilePath(const QString& path)
 	{
+		QMutexLocker l(&_mutex);
 		if (path == _logFilePath)
 			return;
+		l.unlock();
+
 		stop();
+
+		l.relock();
 		_logFilePath = path;
-		emit logFilePathChanged(_logFilePath);
+		l.unlock();
+
+		emit logFilePathChanged(path);
 	}
 
-	bool getWatch() const
+	qint64 getFileSize() const
 	{
-		return _watch;
+		QMutexLocker l(&_mutex);
+		return _fileSize;
 	}
 
-	void setWatch(bool onoff)
+	bool isPaused() const
 	{
-		if (_watch == onoff)
+		QMutexLocker l(&_mutex);
+		return _paused;
+	}
+
+	void setPause(bool pause)
+	{
+		QMutexLocker l(&_mutex);
+		if (pause == _paused)
+		{
 			return;
-		_watch = onoff;
-		emit watchChanged(_watch);
-	}
-
-	void stop()
-	{
-		_stop = true;
-		if (isRunning())
-			wait();
-		_stop = false;
+		}
+		_paused = pause;
+		if (!_paused)
+		{
+			_pauseCondition.wakeAll();
+		}
+		l.unlock();
+		emit pausedChanged(pause);
 	}
 
 	void run()
@@ -85,23 +108,25 @@ public:
 
 			in.seekg(0, std::ios::end);
 			const auto fileSize = in.tellg();
-			emit fileSizeChanged(fileSize);
+			setFileSize(fileSize);
 
 			if (offset < 0 || offset > fileSize)
 				in.seekg(0, std::ios::beg);
 			else
 				in.seekg(offset);
 			offset = fileSize;
-			//std::cout << "offset: " << offset << std::endl;
+			std::cout << "offset: " << offset << std::endl;
 
 			parser.parseStream(in);
 			in.close();
 
-			if (!_watch)
+			// Need pause?
+			QMutexLocker l(&_mutex);
+			while (_paused && !_stop)
 			{
-				_stop = true;
-				break;
+				_pauseCondition.wait(&_mutex, QDeadlineTimer(std::chrono::milliseconds(1000)));
 			}
+			l.unlock();
 			QThread::currentThread()->msleep(500);
 		}
 	}
@@ -112,16 +137,40 @@ public:
 		qmlRegisterType<LogReader>("mf.nc.DamageLogLoader", 1, 0, "DamageLogLoader");
 	}
 
+protected:
+	void setFileSize(qint64 fileSize)
+	{
+		QMutexLocker l(&_mutex);
+		if (_fileSize == fileSize)
+			return;
+		_fileSize = fileSize;
+		l.unlock();
+		emit fileSizeChanged(fileSize);
+	}
+
+	void stop()
+	{
+		_stop = true;
+		if (isRunning())
+			wait();
+		_stop = false;
+	}
+
 signals:
 	void errorOccurred(const QString& errorString);
 	void logFilePathChanged(const QString& path);
-	void watchChanged(bool enabled);
+	void pausedChanged(bool paused);
 	void fileSizeChanged(qint64 fileSize);
 	void newLog(DamageHit damageHit);
 
 private:
 	std::atomic<bool> _stop;
-	QMutex _mutex;
+
+	mutable QMutex _mutex;
 	QString _logFilePath;
-	bool _watch = false;
+	qint64 _fileSize = 0;
+
+	// pause based attributes.
+	QWaitCondition _pauseCondition;
+	bool _paused = false;
 };

@@ -13,8 +13,8 @@ ApplicationWindow {
 	width: 1024
 	height: 768
 	visible: true
-	title: Qt.application.displayName + " - " + Qt.application.version + " - " + Qt.application.organization
-	onActiveFocusItemChanged: console.log("onActiveFocusItemChanged()", activeFocusItem)
+	title: Qt.application.displayName + " - " + Qt.application.version
+	onActiveFocusItemChanged: console.log("ApplicationWindow::onActiveFocusItemChanged()", activeFocusItem)
 
 	header: Rectangle {
 		height: 40
@@ -35,13 +35,16 @@ ApplicationWindow {
 				text: window.title
 				horizontalAlignment: Qt.AlignHCenter
 				verticalAlignment: Qt.AlignVCenter
+				color: "black"
 			}
 			Button {
 				id: infoButton
 				Layout.fillHeight: true
 				enabled: true
 				icon.source: "qrc:/res/info-white-24dp.svg"
-				onClicked: stack.pop()
+				onClicked: {
+					stack.push("qrc:/qml/pages/AboutPage.qml")
+				}
 			}
 		}
 	}
@@ -49,12 +52,11 @@ ApplicationWindow {
 	StackView {
 		id: stack
 		anchors.fill: parent
-		initialItem: compSelectFile
-	}
-
-	Loader {
-		id: loader
-		focus: true
+		Component.onCompleted: {
+			stack.push(compSelectFile)
+			//stack.push("qrc:/qml/pages/DamageLogViewPage.qml")
+			//stack.push("qrc:/qml/pages/AboutPage.qml")
+		}
 	}
 
 	Component {
@@ -62,10 +64,6 @@ ApplicationWindow {
 		Item {
 			ColumnLayout {
 				anchors.centerIn: parent
-				CheckBox {
-					id: watch
-					text: "Auto Reload File"
-				}
 				Button {
 					text: "Select *.log file"
 					onClicked: {
@@ -84,8 +82,7 @@ ApplicationWindow {
 					if (fileUrl.length <= 0) {
 						return
 					}
-					loader.setSource("qrc:/qml/pages/DamageLogViewPage.qml", { logFilePath: app.urlLocalFile(fileDialog.fileUrl), autoReload: watch.checked })
-					stack.push(loader)
+					stack.push("qrc:/qml/pages/DamageLogViewPage.qml", { logFilePath: app.urlLocalFile(fileDialog.fileUrl) })
 				}
 			}
 		}

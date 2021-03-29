@@ -15,9 +15,9 @@ public:
 		ByShields,
 		ByArmor,
 		BySkills,
-		ResultDamage,
 		ResultReduction,
-		ResultPercentage
+		ResultPercentage,
+		ResultDamage
 	};
 
 	DamageHitInfoTableModel(QObject* parent = nullptr)
@@ -37,9 +37,9 @@ public:
 			<< RowInfo{ Rows::ByShields, QStringLiteral("Shields (%)") }
 			<< RowInfo{ Rows::ByArmor, QStringLiteral("Armor (%)") }
 			<< RowInfo{ Rows::BySkills, QStringLiteral("Skills (%)") }
-			<< RowInfo{ Rows::ResultDamage, QStringLiteral("Result") }
 			<< RowInfo{ Rows::ResultReduction, QStringLiteral("Result Reduction") }
-			<< RowInfo{ Rows::ResultPercentage, QStringLiteral("Result (%)") }
+			<< RowInfo{ Rows::ResultPercentage, QStringLiteral("Result Damage (%)") }
+			<< RowInfo{ Rows::ResultDamage, QStringLiteral("Result Damage") }
 		;
 	}
 

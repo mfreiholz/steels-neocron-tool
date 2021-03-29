@@ -32,4 +32,6 @@ public:
 private:
 	QString _version;
 };
+
+// Register types from external libs.
 Q_DECLARE_METATYPE(DamageHit)

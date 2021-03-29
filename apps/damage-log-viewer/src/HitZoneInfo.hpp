@@ -8,7 +8,7 @@ class HitZoneInfo
 	Q_GADGET
 
 public:
-	enum HitZone { Head, Torso, Legs, All, Unknown };
+	enum class HitZone { Head, Torso, Legs, All, Unknown };
 	Q_ENUM(HitZone)
 
 	static void declareQtTypes()

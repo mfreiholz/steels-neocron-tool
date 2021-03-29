@@ -16,9 +16,9 @@ int main(int argc, char** argv)
 #endif
 	QGuiApplication qtapp(argc, argv);
 	qtapp.setOrganizationName("mfreiholz.de");
-	qtapp.setOrganizationDomain("https://www.mfreiholz.de");
-	qtapp.setApplicationName("NeocronLog");
-	qtapp.setApplicationVersion("1.0.0");
+	qtapp.setOrganizationDomain("https://mfreiholz.de");
+	qtapp.setApplicationName("Neocron Log Viewer");
+	qtapp.setApplicationVersion("1.0.0-beta");
 
 	App myApp;
 	HitZoneInfo::declareQtTypes();

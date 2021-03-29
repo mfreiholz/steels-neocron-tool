@@ -61,7 +61,7 @@ Item {
 				tableView.forceLayout()
 			}
 			delegate: Rectangle {
-				color: !model.display ? Universal.baseLowColor : Universal.altLowColor
+				color: row > 4 ? (!model.display ? "transparent" : Universal.accent) : (!model.display ? "transparent" : "#2b5640")
 				border.width: 1
 				border.color: "#aaaaaa"
 				Label {
@@ -112,7 +112,7 @@ Item {
 					Rectangle {
 						width: 150
 						height: tableView.rowHeightProvider(modelData)
-						color: "#333333"
+						color: index > 4 ? "#666666" : "#333333"
 						border.width: 1
 						border.color: "#aaaaaa"
 						Label {

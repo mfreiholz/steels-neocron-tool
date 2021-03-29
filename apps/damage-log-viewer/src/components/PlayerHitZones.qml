@@ -34,6 +34,8 @@ Item {
 
 	ColumnLayout {
 		anchors.fill: parent
+		anchors.margins: 5
+		spacing: 5
 
 		Rectangle {
 			id: headShape

@@ -7,9 +7,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick Multimedia LinguistTool
 # Qt End
 
 if(WIN32)
-	if(CMAKE_BUILD_TYPE MATCHES RELEASE)
-		set(GUI_TYPE WIN32)
-	endif()
+	set(GUI_TYPE WIN32)
 endif()
 if(APPLE)
 	set(GUI_TYPE MACOSX_BUNDLE)

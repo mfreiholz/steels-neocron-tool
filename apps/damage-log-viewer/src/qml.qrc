@@ -13,5 +13,6 @@
         <file>pages/DamageLogViewPage.qml</file>
         <file>components/PlayerHitZones.qml</file>
         <file>components/DamageHitInfoTable.qml</file>
+        <file>pages/AboutPage.qml</file>
     </qresource>
 </RCC>
