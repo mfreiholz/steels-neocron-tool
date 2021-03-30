@@ -91,6 +91,16 @@ public:
 		return it == details.end() ? std::nullopt : std::optional(it);
 	}
 
+	std::optional<std::vector<DamagePart::Detail>::const_iterator> findPreviousResistSourceDetail(const std::vector<DamagePart::Detail>& details, DamageTypeInfo::ResistSource resistSource) const
+	{
+		auto p = [&resistSource](const DamagePart::Detail& detail) {
+			auto rs = DamageTypeInfo::sourceFromString(QString::fromStdString(detail.source));
+			return rs == resistSource;
+		};
+		auto it = std::find_if(details.begin(), details.end(), p);
+		return it == details.end() || it == details.begin() ? std::nullopt : std::optional(--it);
+	}
+
 	static void declareQtTypes()
 	{
 		qRegisterMetaType<DamageHitInfo*>();

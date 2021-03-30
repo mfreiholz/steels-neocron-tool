@@ -34,8 +34,8 @@ public:
 		double resistanceCap = 0.840;
 	};
 
-	int hitZone;
-	int partIndex = 0;
+	int hitZone = -1;
+	int partIndex = -1;
 	std::string damageType;
 	double value = 0.0;
 	std::vector<Detail> details;

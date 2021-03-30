@@ -2,22 +2,30 @@
 #include <QAbstractTableModel>
 #include "DamageTypeInfo.hpp"
 #include <optional>
+#include <QHash>
 
 class DamageHitInfoTableModel : public QAbstractTableModel
 {
 	Q_OBJECT
 
 public:
-	enum class Rows : int
+	enum Rows
 	{
 		Damage,
 		ByPsi,
 		ByShields,
 		ByArmor,
 		BySkills,
-		ResultReduction,
-		ResultPercentage,
 		ResultDamage
+	};
+
+	enum Role
+	{
+		DamageValueRole = Qt::UserRole +1,
+		DamageReductionRole,
+		DamageReductionPercentageRole,
+		DamageReductionFromPreviousRole,
+		DamageReductionPercentageFromPreviousRole
 	};
 
 	DamageHitInfoTableModel(QObject* parent = nullptr)
@@ -31,16 +39,12 @@ public:
 			<< ColumnInfo{ DamageTypeInfo::Type::Force, QStringLiteral("Force") }
 			<< ColumnInfo{ DamageTypeInfo::Type::Pierce, QStringLiteral("Pierce") }
 		;
-		_rowInfos
-			<< RowInfo{ Rows::Damage, QStringLiteral("Damage") }
-			<< RowInfo{ Rows::ByPsi, QStringLiteral("PSI (%)") }
-			<< RowInfo{ Rows::ByShields, QStringLiteral("Shields (%)") }
-			<< RowInfo{ Rows::ByArmor, QStringLiteral("Armor (%)") }
-			<< RowInfo{ Rows::BySkills, QStringLiteral("Skills (%)") }
-			<< RowInfo{ Rows::ResultReduction, QStringLiteral("Result Reduction") }
-			<< RowInfo{ Rows::ResultPercentage, QStringLiteral("Result Damage (%)") }
-			<< RowInfo{ Rows::ResultDamage, QStringLiteral("Result Damage") }
-		;
+		_rowInfos.insert(static_cast<int>(Rows::Damage), RowInfo{ QStringLiteral("Raw Damage") });
+		_rowInfos.insert(static_cast<int>(Rows::ByPsi), RowInfo{ QStringLiteral("PSI Resist"), DamageTypeInfo::ResistSource::Psi });
+		_rowInfos.insert(static_cast<int>(Rows::ByShields), RowInfo{ QStringLiteral("Shields Resist"), DamageTypeInfo::ResistSource::Shield });
+		_rowInfos.insert(static_cast<int>(Rows::ByArmor), RowInfo{ QStringLiteral("Armor Resist"), DamageTypeInfo::ResistSource::Armor });
+		_rowInfos.insert(static_cast<int>(Rows::BySkills), RowInfo{ QStringLiteral("Skills Resist"), DamageTypeInfo::ResistSource::Skill });
+		_rowInfos.insert(static_cast<int>(Rows::ResultDamage), RowInfo{ QStringLiteral("Result") });
 	}
 
 	~DamageHitInfoTableModel() override
@@ -51,6 +55,18 @@ public:
 		beginResetModel();
 		_dmgHitInfo = info;
 		endResetModel();
+	}
+
+	QHash<int, QByteArray> roleNames() const
+	{
+		QHash<int, QByteArray> h;
+		h[static_cast<int>(Qt::DisplayRole)] = "display";
+		h[static_cast<int>(Role::DamageValueRole)] = "damage";
+		h[static_cast<int>(Role::DamageReductionRole)] = "damageReduction";
+		h[static_cast<int>(Role::DamageReductionPercentageRole)] = "damageReductionPercentage";
+		h[static_cast<int>(Role::DamageReductionFromPreviousRole)] = "damageReductionFromPrevious";
+		h[static_cast<int>(Role::DamageReductionPercentageFromPreviousRole)] = "damageReductionPercentageFromPrevious";
+		return h;
 	}
 
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override
@@ -66,7 +82,7 @@ public:
 		}
 		else if (orientation == Qt::Vertical && role == Qt::DisplayRole)
 		{
-			return _rowInfos.at(section).title;
+			return _rowInfos[section].title;
 		}
 		return QVariant();
 	}
@@ -80,56 +96,94 @@ public:
 	{
 		if (!_dmgHitInfo || index.row() < 0 || index.row() >= _rowInfos.size() || index.column() < 0 || index.column() >= _columns.count())
 			return QVariant();
-		if (role != Qt::DisplayRole)
+		if (role != Qt::DisplayRole && !(role > Qt::UserRole))
 			return QVariant();
 
-		const auto dmgType = _columns.at(index.column()).damageType;
-		const auto rowType = static_cast<Rows>(index.row());
-
-		// find damage part entry by damage type
-		auto dmgPartOpt = _dmgHitInfo->findDamagePartByType(dmgType);
+		const auto& columnInfo = _columns.at(index.column());
+		const auto& rowInfo = _rowInfos[index.row()];
+		const auto dmgPartOpt = _dmgHitInfo->findDamagePartByType(columnInfo.damageType);
 		if (!dmgPartOpt.has_value())
 		{
 			return QVariant();
 		}
-
-		switch (rowType)
+		else if (index.row() == Rows::Damage)
 		{
-			case Rows::Damage:
+			return dmgPartOpt.value()->value;
+		}
+		else if (index.row() >= Rows::ByPsi && index.row() <= Rows::BySkills)
+		{
+			const auto it = _dmgHitInfo->findResistSourceDetail(dmgPartOpt.value()->details, rowInfo.resistSource);
+			if (it)
 			{
-				return dmgPartOpt.value()->value;
+				switch (role)
+				{
+					case Role::DamageValueRole:
+					{
+						return QString::number(it.value()->value, 'f', 3);
+					}
+					case Role::DamageReductionRole:
+					{
+						return QString::number(it.value()->reduction, 'f', 3);
+					}
+					case Role::DamageReductionPercentageRole:
+					{
+						return QString::number(it.value()->reductionPercentage, 'f', 3);
+					}
+					case Role::DamageReductionFromPreviousRole:
+					{
+						const auto itPrev = _dmgHitInfo->findPreviousResistSourceDetail(dmgPartOpt.value()->details, rowInfo.resistSource);
+						if (itPrev)
+						{
+							auto reduction = itPrev.value()->value - it.value()->value;
+							return QString::number(reduction, 'f', 3);
+						}
+						else
+						{
+							auto reduction = dmgPartOpt.value()->value - it.value()->value;
+							return QString::number(reduction, 'f', 3);
+						}
+						break;
+					}
+					case Role::DamageReductionPercentageFromPreviousRole:
+					{
+						const auto itPrev = _dmgHitInfo->findPreviousResistSourceDetail(dmgPartOpt.value()->details, rowInfo.resistSource);
+						if (itPrev)
+						{
+							auto reduction = itPrev.value()->value - it.value()->value;
+							reduction = 100.0 / itPrev.value()->value * reduction;
+							return QString::number(reduction, 'f', 3);
+						}
+						else
+						{
+							auto reduction = dmgPartOpt.value()->value - it.value()->value;
+							reduction = 100.0 / dmgPartOpt.value()->value * reduction;
+							return QString::number(reduction, 'f', 3);
+						}
+						break;
+					}
+					default:
+					{
+						return QStringLiteral("Woot? Default");
+					}
+				}
 			}
-			case Rows::ByPsi:
+		}
+		else if (index.row() == Rows::ResultDamage)
+		{
+			switch (role)
 			{
-				auto it = _dmgHitInfo->findResistSourceDetail(dmgPartOpt.value()->details, DamageTypeInfo::ResistSource::Psi);
-				return !it ? QVariant() : it.value()->reductionPercentage;
-			}
-			case Rows::ByShields:
-			{
-				auto it = _dmgHitInfo->findResistSourceDetail(dmgPartOpt.value()->details, DamageTypeInfo::ResistSource::Shield);
-				return !it ? QVariant() : it.value()->reductionPercentage;
-			}
-			case Rows::ByArmor:
-			{
-				auto it = _dmgHitInfo->findResistSourceDetail(dmgPartOpt.value()->details, DamageTypeInfo::ResistSource::Armor);
-				return !it ? QVariant() : it.value()->reductionPercentage;
-			}
-			case Rows::BySkills:
-			{
-				auto it = _dmgHitInfo->findResistSourceDetail(dmgPartOpt.value()->details, DamageTypeInfo::ResistSource::Skill);
-				return !it ? QVariant() : it.value()->reductionPercentage;
-			}
-			case Rows::ResultDamage:
-			{
-				return dmgPartOpt.value()->result.value;
-			}
-			case Rows::ResultReduction:
-			{
-				return dmgPartOpt.value()->result.reduction;
-			}
-			case Rows::ResultPercentage:
-			{
-				return dmgPartOpt.value()->result.reductionPercentage;
+				case Role::DamageValueRole:
+				{
+					return dmgPartOpt.value()->result.value;
+				}
+				case Role::DamageReductionRole:
+				{
+					return dmgPartOpt.value()->result.reduction;
+				}
+				case Role::DamageReductionPercentageRole:
+				{
+					return dmgPartOpt.value()->result.reductionPercentage;
+				}
 			}
 		}
 		return QVariant();
@@ -146,13 +200,14 @@ private:
 		DamageTypeInfo::Type damageType;
 		QString title;
 	};
+
 	struct RowInfo
 	{
-		Rows row;
 		QString title;
+		DamageTypeInfo::ResistSource resistSource = DamageTypeInfo::ResistSource::UnknownResistSource;
 	};
 
 	DamageHitInfo* _dmgHitInfo = nullptr;
 	QList<ColumnInfo> _columns;
-	QList<RowInfo> _rowInfos;
+	QHash<int, RowInfo> _rowInfos;
 };

@@ -10,8 +10,8 @@ import "qrc:/qml"
 
 ApplicationWindow {
 	id: window
-	width: 1024
-	height: 768
+	width: 1280
+	height: 800
 	visible: true
 	title: Qt.application.displayName + " - " + Qt.application.version
 	onActiveFocusItemChanged: console.log("ApplicationWindow::onActiveFocusItemChanged()", activeFocusItem)

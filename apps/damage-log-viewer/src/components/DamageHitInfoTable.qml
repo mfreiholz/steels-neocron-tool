@@ -2,14 +2,22 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls.Universal 2.12
+import Qt.labs.qmlmodels 1.0
 
 import mf.nc.DamageHitInfo 1.0
 import mf.nc.DamageHitInfoTableModel 1.0
+
+import "../"
 
 Item {
 	id: root
 
 	property QtObject damageHitInfo
+
+	readonly property int outerRectBorderWidth: 1
+	readonly property color outerRectBorderColor: "#aaaaaa"
+	readonly property int innerRectBorderWidth: 0
+	readonly property color innerRectBorderColor: "#aaaaaa"
 
 	onDamageHitInfoChanged: {
 		console.log("DamageHitInfo::onDamageHitInfoChanged() ", damageHitInfo)
@@ -60,21 +68,177 @@ Item {
 			onHeightChanged: {
 				tableView.forceLayout()
 			}
-			delegate: Rectangle {
-				color: row > 4 ? (!model.display ? "transparent" : Universal.accent) : (!model.display ? "transparent" : "#2b5640")
-				border.width: 1
-				border.color: "#aaaaaa"
-				Label {
-					anchors.centerIn: parent
-					text: !model.display ? "-" : model.display
-				}
-				MouseArea {
-					anchors.fill: parent
-					enabled: !!model.display
-					onClicked: {
-						app.copyToClipboard(model.display)
+			delegate: DelegateChooser {
+				// Row: Raw damage
+				DelegateChoice {
+					row: 0
+					delegate: Rectangle {
+						color: row > 4 ? (!model.damage ? "transparent" : Universal.accent) : (!model.damage ? "transparent" : "#2b5640")
+						border.width: outerRectBorderWidth
+						border.color: outerRectBorderColor
+						Label {
+							anchors.centerIn: parent
+							text: !model.damage ? "-" : model.damage
+						}
 					}
 				}
+				// Row: Result
+				DelegateChoice {
+					row: 5
+					delegate: Rectangle {
+						color: (!model.damage ? "transparent" : Universal.accent)
+						border.width: outerRectBorderWidth
+						border.color: outerRectBorderColor
+						RowLayout {
+							id: firstRow
+							anchors {
+								top: parent.top
+								right: parent.right
+								left: parent.left
+							}
+							height: parent.height / 2
+							spacing: 0
+							Rectangle {
+								Layout.fillWidth: true
+								Layout.fillHeight: true
+								border.width: innerRectBorderWidth
+								border.color: innerRectBorderColor
+								color: "transparent"
+								Label {
+									anchors.centerIn: parent
+									text: model.damage === undefined ? "" : model.damage
+								}
+							}
+						}
+						RowLayout {
+							anchors.top: firstRow.bottom
+							anchors.left: parent.left
+							anchors.right: parent.right
+							anchors.bottom: parent.bottom
+							spacing: 0
+							Rectangle {
+								Layout.fillWidth: true
+								Layout.fillHeight: true
+								border.width: innerRectBorderWidth
+								border.color: innerRectBorderColor
+								color: "transparent"
+								Label {
+									anchors.centerIn: parent
+									text: model.damageReduction === undefined ? "" : model.damageReduction
+									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
+								}
+							}
+							Rectangle {
+								Layout.fillWidth: true
+								Layout.fillHeight: true
+								border.width: innerRectBorderWidth
+								border.color: innerRectBorderColor
+								color: "transparent"
+								Label {
+									anchors.centerIn: parent
+									text: model.damageReductionPercentage === undefined ? "" : model.damageReductionPercentage + "%"
+									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
+								}
+							}
+						}
+					}
+				}
+				// Row: All others (resists)
+				DelegateChoice {
+					delegate: Rectangle {
+						color: (!model.display ? "transparent" : "#2b5640")
+						border.width: outerRectBorderWidth
+						border.color: outerRectBorderColor
+						RowLayout {
+							id: defaultFirstRow
+							anchors.top: parent.top
+							anchors.left: parent.left
+							anchors.right: parent.right
+							height: parent.height / 2
+							spacing: 0
+							Rectangle {
+								Layout.fillWidth: true
+								Layout.fillHeight: true
+								border.width: innerRectBorderWidth
+								border.color: innerRectBorderColor
+								color: "transparent"
+								Label {
+									anchors.centerIn: parent
+									text: model.damageReductionFromPrevious === undefined ? "" : model.damageReductionFromPrevious
+								}
+							}
+							Rectangle {
+								Layout.fillWidth: true
+								Layout.fillHeight: true
+								border.width: innerRectBorderWidth
+								border.color: innerRectBorderColor
+								color: "transparent"
+								Label {
+									anchors.centerIn: parent
+									text: model.damageReductionPercentageFromPrevious === undefined ? "" : model.damageReductionPercentageFromPrevious + "%"
+								}
+							}
+						}
+						RowLayout {
+							anchors.top: defaultFirstRow.bottom
+							anchors.left: parent.left
+							anchors.right: parent.right
+							anchors.bottom: parent.bottom
+							anchors.topMargin: -1
+							spacing: 0
+							Rectangle {
+								Layout.fillWidth: true
+								Layout.fillHeight: true
+								border.width: innerRectBorderWidth
+								border.color: innerRectBorderColor
+								color: "transparent"
+								Label {
+									anchors.centerIn: parent
+									text: model.damage === undefined ? "" : model.damage
+									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
+								}
+							}
+							Rectangle {
+								Layout.fillWidth: true
+								Layout.fillHeight: true
+								border.width: innerRectBorderWidth
+								border.color: innerRectBorderColor
+								color: "transparent"
+								Label {
+									anchors.centerIn: parent
+									text: model.damageReduction === undefined ? "" : model.damageReduction
+									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
+								}
+							}
+							Rectangle {
+								Layout.fillWidth: true
+								Layout.fillHeight: true
+								border.width: innerRectBorderWidth
+								border.color: innerRectBorderColor
+								color: "transparent"
+								Label {
+									anchors.centerIn: parent
+									text: model.damageReductionPercentage === undefined ? "" : model.damageReductionPercentage + "%"
+									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
+								}
+							}
+						}
+					}
+				} // DelgateChoice
+			}
+
+
+//			MouseArea {
+//				anchors.fill: parent
+//				enabled: !!model.display
+//				onClicked: {
+//					app.copyToClipboard(model.display)
+//				}
+//			}
+
+
+			FontMetrics {
+				id: tableViewFontMetrics
 			}
 
 			Row {
