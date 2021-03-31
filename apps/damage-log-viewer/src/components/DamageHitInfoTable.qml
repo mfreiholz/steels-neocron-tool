@@ -76,9 +76,9 @@ Item {
 						color: row > 4 ? (!model.damage ? "transparent" : Universal.accent) : (!model.damage ? "transparent" : "#2b5640")
 						border.width: outerRectBorderWidth
 						border.color: outerRectBorderColor
-						Label {
-							anchors.centerIn: parent
-							text: !model.damage ? "-" : model.damage
+						DamageHitInfoTableCellLabel {
+							text: model.damage === undefined ? "" : model.damage
+							hint: "Incoming raw damage to player"
 						}
 					}
 				}
@@ -104,9 +104,10 @@ Item {
 								border.width: innerRectBorderWidth
 								border.color: innerRectBorderColor
 								color: "transparent"
-								Label {
-									anchors.centerIn: parent
+								DamageHitInfoTableCellLabel {
 									text: model.damage === undefined ? "" : model.damage
+									hint: "Final incoming damage"
+									font.bold: true
 								}
 							}
 						}
@@ -122,9 +123,9 @@ Item {
 								border.width: innerRectBorderWidth
 								border.color: innerRectBorderColor
 								color: "transparent"
-								Label {
-									anchors.centerIn: parent
+								DamageHitInfoTableCellLabel {
 									text: model.damageReduction === undefined ? "" : model.damageReduction
+									hint: "Final damage reduction"
 									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
 								}
 							}
@@ -134,9 +135,9 @@ Item {
 								border.width: innerRectBorderWidth
 								border.color: innerRectBorderColor
 								color: "transparent"
-								Label {
-									anchors.centerIn: parent
+								DamageHitInfoTableCellLabel {
 									text: model.damageReductionPercentage === undefined ? "" : model.damageReductionPercentage + "%"
+									hint: "Final damage reduction in %"
 									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
 								}
 							}
@@ -162,9 +163,9 @@ Item {
 								border.width: innerRectBorderWidth
 								border.color: innerRectBorderColor
 								color: "transparent"
-								Label {
-									anchors.centerIn: parent
+								DamageHitInfoTableCellLabel {
 									text: model.damageReductionFromPrevious === undefined ? "" : model.damageReductionFromPrevious
+									hint: "Calculated damage reduction by " + tableView.model.headerData(row, Qt.Vertical)
 								}
 							}
 							Rectangle {
@@ -173,9 +174,9 @@ Item {
 								border.width: innerRectBorderWidth
 								border.color: innerRectBorderColor
 								color: "transparent"
-								Label {
-									anchors.centerIn: parent
+								DamageHitInfoTableCellLabel {
 									text: model.damageReductionPercentageFromPrevious === undefined ? "" : model.damageReductionPercentageFromPrevious + "%"
+									hint: "Calculated damage reduction by  " + tableView.model.headerData(row, Qt.Vertical) + " in %"
 								}
 							}
 						}
@@ -192,9 +193,9 @@ Item {
 								border.width: innerRectBorderWidth
 								border.color: innerRectBorderColor
 								color: "transparent"
-								Label {
-									anchors.centerIn: parent
+								DamageHitInfoTableCellLabel {
 									text: model.damage === undefined ? "" : model.damage
+									hint: "Remaining damage after reduction of " + tableView.model.headerData(row, Qt.Vertical)
 									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
 								}
 							}
@@ -204,9 +205,9 @@ Item {
 								border.width: innerRectBorderWidth
 								border.color: innerRectBorderColor
 								color: "transparent"
-								Label {
-									anchors.centerIn: parent
+								DamageHitInfoTableCellLabel {
 									text: model.damageReduction === undefined ? "" : model.damageReduction
+									hint: "Accumulated damage reduction after " + tableView.model.headerData(row, Qt.Vertical)
 									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
 								}
 							}
@@ -216,9 +217,9 @@ Item {
 								border.width: innerRectBorderWidth
 								border.color: innerRectBorderColor
 								color: "transparent"
-								Label {
-									anchors.centerIn: parent
+								DamageHitInfoTableCellLabel {
 									text: model.damageReductionPercentage === undefined ? "" : model.damageReductionPercentage + "%"
+									hint: "Accumulated damage reduction after " + tableView.model.headerData(row, Qt.Vertical) + " in %"
 									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
 								}
 							}

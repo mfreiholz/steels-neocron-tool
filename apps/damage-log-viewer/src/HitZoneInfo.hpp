@@ -1,4 +1,5 @@
 #pragma once
+#include <QDebug>
 #include <QObject>
 #include <QMetaType>
 #include <QQmlApplicationEngine>
@@ -34,6 +35,9 @@ public:
 		case 3:
 			hz = HitZone::All;
 			break;
+		default:
+			qDebug() << "Unknown HitZone" << zone;
+			break;
 		}
 		return hz;
 	}
@@ -50,6 +54,8 @@ public:
 			hz = HitZone::Legs;
 		else if (s.compare(QStringLiteral("all")) == 0)
 			hz = HitZone::All;
+		else
+			qDebug() << "Unknown HitZone" << zone;
 		return hz;
 	}
 };

@@ -14,5 +14,6 @@
         <file>components/PlayerHitZones.qml</file>
         <file>components/DamageHitInfoTable.qml</file>
         <file>pages/AboutPage.qml</file>
+        <file>components/DamageHitInfoTableCellLabel.qml</file>
     </qresource>
 </RCC>

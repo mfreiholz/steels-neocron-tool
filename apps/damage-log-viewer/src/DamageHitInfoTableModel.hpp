@@ -37,7 +37,7 @@ public:
 			<< ColumnInfo{ DamageTypeInfo::Type::XRay, QStringLiteral("XRay") }
 			<< ColumnInfo{ DamageTypeInfo::Type::Poison, QStringLiteral("Poison") }
 			<< ColumnInfo{ DamageTypeInfo::Type::Force, QStringLiteral("Force") }
-			<< ColumnInfo{ DamageTypeInfo::Type::Pierce, QStringLiteral("Pierce") }
+			<< ColumnInfo{ DamageTypeInfo::Type::Piercing, QStringLiteral("Piercing") }
 		;
 		_rowInfos.insert(static_cast<int>(Rows::Damage), RowInfo{ QStringLiteral("Raw Damage") });
 		_rowInfos.insert(static_cast<int>(Rows::ByPsi), RowInfo{ QStringLiteral("PSI Resist"), DamageTypeInfo::ResistSource::Psi });
@@ -74,7 +74,7 @@ public:
 		return _columns.count();
 	}
 
-	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override
+	Q_INVOKABLE QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override
 	{
 		if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
 		{

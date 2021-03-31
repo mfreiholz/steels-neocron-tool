@@ -1,4 +1,5 @@
 #pragma once
+#include <QDebug>
 #include <QVector>
 #include <QObject>
 #include <QMetaType>
@@ -9,7 +10,7 @@ class DamageTypeInfo : public QObject
 	Q_OBJECT
 
 public:
-	enum class Type { Fire, Energy, XRay, Poison, Force, Pierce, UnknownDamageType };
+	enum class Type { Fire, Energy, XRay, Poison, Force, Piercing, UnknownDamageType };
 	Q_ENUM(Type)
 
 	enum class ResistSource { Psi, Shield, Armor, Skill, UnknownResistSource };
@@ -33,7 +34,7 @@ public:
 		static QVector<QString> xrayStrings = { "xray", "strahlung" };
 		static QVector<QString> poisonStrings = { "poison", "gift" };
 		static QVector<QString> forceStrings = { "force", "hieb" };
-		static QVector<QString> pierceStrings = { "pierce", "stich" };
+		static QVector<QString> pierceStrings = { "piercing", "stich" };
 
 		const QString s = typeString.toLower().trimmed();
 		Type t = Type::UnknownDamageType;
@@ -48,7 +49,9 @@ public:
 		else if (forceStrings.contains(s))
 			t = Type::Force;
 		else if (pierceStrings.contains(s))
-			t = Type::Pierce;
+			t = Type::Piercing;
+		else
+			qDebug() << "Unknown DamageType" << typeString;
 		return t;
 	}
 
@@ -69,6 +72,8 @@ public:
 			rs = ResistSource::Armor;
 		else if (s.contains(skillMatch))
 			rs = ResistSource::Skill;
+		else
+			qDebug() << "Unknown ResistSource" << sourceString;
 		return rs;
 	}
 };
