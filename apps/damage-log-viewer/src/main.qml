@@ -53,18 +53,63 @@ ApplicationWindow {
 		id: stack
 		anchors.fill: parent
 		Component.onCompleted: {
-			stack.push(compSelectFile)
+			stack.push(startupTilesMenuComp)
 			//stack.push("qrc:/qml/pages/DamageLogViewPage.qml")
 			//stack.push("qrc:/qml/pages/AboutPage.qml")
 		}
 	}
 
 	Component {
-		id: compSelectFile
+		id: startupTilesMenuComp
 		Item {
 			ColumnLayout {
 				anchors.centerIn: parent
+				height: 400
+				width: 500
+				Loader {
+					Layout.fillHeight: true
+					Layout.fillWidth: true
+					sourceComponent: characterLogTileComp
+				}
+			}
+		}
+	}
+
+	Component {
+		id: characterLogTileComp
+		Rectangle {
+			anchors.fill: parent
+			color: Universal.baseLowColor
+			ColumnLayout {
+				spacing: 10
+				anchors {
+					fill: parent
+					margins: 10
+				}
+				Label {
+					Layout.fillHeight: true
+					Layout.fillWidth: true
+					textFormat: Text.MarkdownText
+					wrapMode: Text.Wrap
+					text: "
+# Character Log
+Open your character log and analyze your resist values.
+
+__Example file location:__ `$NEOCRON/logs/<YourCharacter>_00.log`
+
+---
+
+## How to enable logs?
+Neocron doesn't write the required *.log files by default,
+but you can enable logging in your game's configuration file.
+
+- Open file `$NEOCRON/neocron.ini`
+- Append `ENABLELOG = \"TRUE\"` to the end of file.
+- Save file & Start game
+"
+				}
 				Button {
+					Layout.fillWidth: true
 					text: "Select *.log file"
 					onClicked: {
 						fileDialog.open()
@@ -88,51 +133,3 @@ ApplicationWindow {
 		}
 	}
 }
-
-//	footer: Rectangle {
-//		color: "transparent"
-//		height: 40
-
-//		RowLayout {
-//			anchors.fill: parent
-//			spacing: 0
-//			Button {
-//				Layout.fillHeight: true
-//				Layout.fillWidth: true
-//				icon.source: "qrc:/res/folder_open-white-24dp.svg"
-//				text: "File Selection"
-//				onClicked: {
-//					stack.pop()
-//				}
-//			}
-//			Button {
-//				Layout.fillHeight: true
-//				Layout.fillWidth: true
-//				icon.source: "qrc:/res/assessment-white-24dp.svg"
-//				text: "Damage Log"
-//				enabled: logFilePath.length > 0
-//				onClicked: {
-//				}
-//			}
-//		}
-//	}
-
-//	Drawer {
-//		id: drawer
-//		width: window.width * 0.66
-//		height: window.height
-
-//		Label {
-//			anchors.centerIn: parent
-//			text: "Content goes here!"
-//		}
-//	}
-
-//	Component {
-//		id: compDamageLogViewPage
-//		DamageLogViewPage {
-//			focus: true
-//			logFilePath: window.logFilePath
-//			autoReload: window.autoReload
-//		}
-//	}
