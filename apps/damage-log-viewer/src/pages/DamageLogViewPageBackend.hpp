@@ -32,6 +32,7 @@ public:
 
 		QStringList headers;
 		headers
+			<< "DAMAGE_TYPE"
 			<< "RAW_DAMAGE"
 			<< "RAW_DAMAGE_HITZONE"
 
@@ -62,6 +63,7 @@ public:
 			for (const auto& hitPart : hit->getDamageHit().damageParts)
 			{
 				auto row = writer.createEmptyRow();
+				row["DAMAGE_TYPE"] = DamageTypeInfo::typeAsString(DamageTypeInfo::typeFromString(QString::fromStdString(hitPart.damageType)));
 				row["RAW_DAMAGE"] = QString::number(hitPart.value, 'f', 3);
 				row["RAW_DAMAGE_HITZONE"] = QString::number(hitPart.hitZone);
 				for (const auto& detail : hitPart.details)

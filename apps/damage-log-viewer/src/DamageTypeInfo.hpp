@@ -55,6 +55,26 @@ public:
 		return t;
 	}
 
+	static QString typeAsString(Type damageType)
+	{
+		switch (damageType)
+		{
+		case Type::Fire:
+			return QStringLiteral("fire");
+		case Type::Energy:
+			return QStringLiteral("energy");
+		case Type::XRay:
+			return QStringLiteral("xray");
+		case Type::Poison:
+			return QStringLiteral("poison");
+		case Type::Force:
+			return QStringLiteral("force");
+		case Type::Piercing:
+			return QStringLiteral("piercing");
+		}
+		return QString();
+	}
+
 	static ResistSource sourceFromString(const QString& sourceString)
 	{
 		static QString psiMatch("psi");
