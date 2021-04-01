@@ -26,9 +26,12 @@ add_executable(
 	src/HitZoneInfo.hpp
 	src/DamageHitInfo.hpp
 	src/LogReader.hpp
+	src/CsvWriter.hpp
 
 	src/DamageHitInfoListModel.hpp
 	src/DamageHitInfoTableModel.hpp
+
+	src/pages/DamageLogViewPageBackend.hpp
 )
 
 target_link_libraries(

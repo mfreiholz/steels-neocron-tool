@@ -6,6 +6,7 @@ import QtQuick.Controls.Universal 2.12
 
 import mf.nc.DamageHitInfoListModel 1.0
 import mf.nc.DamageLogLoader 1.0
+import mf.nc.DamageLogViewPageBackend 1.0
 
 import "qrc:/qml/components"
 
@@ -25,6 +26,10 @@ Item {
 
 	Component.onDestruction: {
 		console.log("DamageLogViewPage::onDestruction()")
+	}
+
+	DamageLogViewPageBackend {
+		id: backend
 	}
 
 	DamageLogLoader {
@@ -153,27 +158,43 @@ Item {
 			}
 		}
 
-		Column {
+		ColumnLayout {
 			id: areaBottomRight
 			anchors {
 				top: parent.top
 				right: parent.right
 				bottom: parent.bottom
 				left: undefined
+				margins: 5
 			}
 			width: 200
 			Label {
+				Layout.fillWidth: true
 				text: "Size: " + loader.fileSize+" bytes"
 			}
 			CheckBox {
+				Layout.fillWidth: true
 				id: autoSelectCurrent
 				text: "Auto select newest log"
 				checked: true
 			}
 			CheckBox {
+				Layout.fillWidth: true
 				id: liveUpdateCheckBox
 				text: "Live update"
 				checked: false
+			}
+			Item {
+				Layout.fillHeight: true
+				Layout.fillWidth: true
+			}
+			Button {
+				Layout.fillWidth: true
+				id: exportCsvButton
+				text: "Export CSV"
+				onClicked: {
+					backend.writeCSV(damageHitInfoModel.getItems())
+				}
 			}
 		}
 	}

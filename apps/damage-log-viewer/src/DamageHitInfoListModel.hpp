@@ -38,6 +38,11 @@ public:
 		return _list.at(index);
 	}
 
+	Q_INVOKABLE QList<DamageHitInfo*> getItems() const
+	{
+		return _list;
+	}
+
 	QHash<int, QByteArray> roleNames() const
 	{
 		QHash<int, QByteArray> roles;
@@ -85,6 +90,7 @@ public:
 
 	static void declareQtTypes()
 	{
+		qRegisterMetaType<QList<DamageHitInfo*>>("QList<DamageHitInfo*>");
 		qmlRegisterType<DamageHitInfoListModel>("mf.nc.DamageHitInfoListModel", 1, 0, "DamageHitInfoListModel");
 	}
 };

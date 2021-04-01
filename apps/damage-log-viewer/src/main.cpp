@@ -8,6 +8,7 @@
 #include "DamageHitInfo.hpp"
 #include "DamageHitInfoListModel.hpp"
 #include "DamageHitInfoTableModel.hpp"
+#include "pages/DamageLogViewPageBackend.hpp"
 
 int main(int argc, char** argv)
 {
@@ -27,6 +28,7 @@ int main(int argc, char** argv)
 	DamageHitInfoListModel::declareQtTypes();
 	DamageHitInfoTableModel::declareQtTypes();
 	LogReader::declareQtTypes();
+	DamageLogViewPageBackend::declareQtTypes();
 
 	// setup QML engine and context
 	QQmlApplicationEngine engine;
