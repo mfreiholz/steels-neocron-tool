@@ -8,5 +8,9 @@ Parses Neocron's log files and displays it's information.
   - Live update while game is running
   - Export in structured CSV for further investigation
 
+## Download
+[Download from here](https://drive.google.com/drive/folders/1KhpADdxU8OFcuKMqCyrBIOTBiFjE0UbK?usp=sharing)
+the newest version.
+
 ## License
 This program is released under license _GNU General Public License version 3_.
