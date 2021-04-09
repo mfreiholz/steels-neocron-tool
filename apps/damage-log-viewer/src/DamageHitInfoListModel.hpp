@@ -24,7 +24,7 @@ public:
 
 	~DamageHitInfoListModel() override = default;
 
-	Q_INVOKABLE void add(DamageHit hit)
+	Q_INVOKABLE void add(nclog::DamageHit hit)
 	{
 		beginInsertRows(QModelIndex(), _list.count(), _list.count());
 		auto info = new DamageHitInfo(this);

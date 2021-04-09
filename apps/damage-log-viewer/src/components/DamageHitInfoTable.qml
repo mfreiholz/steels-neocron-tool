@@ -17,7 +17,7 @@ Item {
 	readonly property int outerRectBorderWidth: 1
 	readonly property color outerRectBorderColor: "#aaaaaa"
 	readonly property int innerRectBorderWidth: 0
-	readonly property color innerRectBorderColor: "#aaaaaa"
+	readonly property color innerRectBorderColor: "#666666"
 
 	onDamageHitInfoChanged: {
 		console.log("DamageHitInfo::onDamageHitInfoChanged() ", damageHitInfo)
@@ -40,24 +40,26 @@ Item {
 		TableView {
 			id: tableView
 			anchors.fill: parent
-			topMargin:  columnsHeader.implicitHeight + tableView.rowSpacing - 1
+			topMargin: columnsHeader.implicitHeight + tableView.rowSpacing - 1
 			leftMargin: rowsHeader.implicitWidth + tableView.columnSpacing - 1
 			model: damageHitInfoModel
 			columnSpacing: 5
 			rowSpacing: 5
 			clip: true
-			columnWidthProvider: function(column) {
+			columnWidthProvider: function (column) {
 				var w = (tableView.width - tableView.leftMargin) / tableView.model.columnCount()
 				if (tableView.columnSpacing > 0) {
-					var spacingWidth = tableView.columnSpacing * (tableView.model.columnCount() - 1)
+					var spacingWidth = tableView.columnSpacing * (tableView.model.columnCount(
+																	  ) - 1)
 					w -= spacingWidth / tableView.model.columnCount()
 				}
 				return w
 			}
-			rowHeightProvider: function(row) {
+			rowHeightProvider: function (row) {
 				var h = (tableView.height - tableView.topMargin) / tableView.model.rowCount()
 				if (tableView.rowSpacing > 0) {
-					var spacingHeight = tableView.rowSpacing * (tableView.model.rowCount() - 1)
+					var spacingHeight = tableView.rowSpacing * (tableView.model.rowCount(
+																	) - 1)
 					h -= spacingHeight / tableView.model.rowCount()
 				}
 				return h
@@ -124,7 +126,8 @@ Item {
 								border.color: innerRectBorderColor
 								color: "transparent"
 								DamageHitInfoTableCellLabel {
-									text: model.damageReduction === undefined ? "" : model.damageReduction
+									text: model.damageReduction
+										  === undefined ? "" : model.damageReduction
 									hint: "Final damage reduction"
 									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
 								}
@@ -136,7 +139,8 @@ Item {
 								border.color: innerRectBorderColor
 								color: "transparent"
 								DamageHitInfoTableCellLabel {
-									text: model.damageReductionPercentage === undefined ? "" : model.damageReductionPercentage + "%"
+									text: model.damageReductionPercentage
+										  === undefined ? "" : model.damageReductionPercentage + "%"
 									hint: "Final damage reduction in %"
 									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
 								}
@@ -164,8 +168,11 @@ Item {
 								border.color: innerRectBorderColor
 								color: "transparent"
 								DamageHitInfoTableCellLabel {
-									text: model.damageReductionFromPrevious === undefined ? "" : model.damageReductionFromPrevious
-									hint: "Calculated damage reduction by " + tableView.model.headerData(row, Qt.Vertical)
+									text: model.damageReductionFromPrevious
+										  === undefined ? "" : model.damageReductionFromPrevious
+									hint: "Calculated damage reduction by "
+										  + tableView.model.headerData(
+											  row, Qt.Vertical)
 								}
 							}
 							Rectangle {
@@ -175,8 +182,11 @@ Item {
 								border.color: innerRectBorderColor
 								color: "transparent"
 								DamageHitInfoTableCellLabel {
-									text: model.damageReductionPercentageFromPrevious === undefined ? "" : model.damageReductionPercentageFromPrevious + "%"
-									hint: "Calculated damage reduction by  " + tableView.model.headerData(row, Qt.Vertical) + " in %"
+									text: model.damageReductionPercentageFromPrevious
+										  === undefined ? "" : model.damageReductionPercentageFromPrevious + "%"
+									hint: "Calculated damage reduction by  "
+										  + tableView.model.headerData(
+											  row, Qt.Vertical) + " in %"
 								}
 							}
 						}
@@ -195,7 +205,9 @@ Item {
 								color: "transparent"
 								DamageHitInfoTableCellLabel {
 									text: model.damage === undefined ? "" : model.damage
-									hint: "Remaining damage after reduction of " + tableView.model.headerData(row, Qt.Vertical)
+									hint: "Remaining damage after reduction of "
+										  + tableView.model.headerData(
+											  row, Qt.Vertical)
 									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
 								}
 							}
@@ -206,8 +218,11 @@ Item {
 								border.color: innerRectBorderColor
 								color: "transparent"
 								DamageHitInfoTableCellLabel {
-									text: model.damageReduction === undefined ? "" : model.damageReduction
-									hint: "Accumulated damage reduction after " + tableView.model.headerData(row, Qt.Vertical)
+									text: model.damageReduction
+										  === undefined ? "" : model.damageReduction
+									hint: "Accumulated damage reduction after "
+										  + tableView.model.headerData(
+											  row, Qt.Vertical)
 									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
 								}
 							}
@@ -218,8 +233,11 @@ Item {
 								border.color: innerRectBorderColor
 								color: "transparent"
 								DamageHitInfoTableCellLabel {
-									text: model.damageReductionPercentage === undefined ? "" : model.damageReductionPercentage + "%"
-									hint: "Accumulated damage reduction after " + tableView.model.headerData(row, Qt.Vertical) + " in %"
+									text: model.damageReductionPercentage
+										  === undefined ? "" : model.damageReductionPercentage + "%"
+									hint: "Accumulated damage reduction after "
+										  + tableView.model.headerData(
+											  row, Qt.Vertical) + " in %"
 									font.pointSize: tableViewFontMetrics.font.pointSize * 0.9
 								}
 							}
@@ -228,16 +246,13 @@ Item {
 				} // DelgateChoice
 			}
 
-
-//			MouseArea {
-//				anchors.fill: parent
-//				enabled: !!model.display
-//				onClicked: {
-//					app.copyToClipboard(model.display)
-//				}
-//			}
-
-
+			//			MouseArea {
+			//				anchors.fill: parent
+			//				enabled: !!model.display
+			//				onClicked: {
+			//					app.copyToClipboard(model.display)
+			//				}
+			//			}
 			FontMetrics {
 				id: tableViewFontMetrics
 			}
@@ -259,7 +274,8 @@ Item {
 						border.color: "#aaaaaa"
 						Label {
 							anchors.centerIn: parent
-							text: tableView.model.headerData(modelData, Qt.Horizontal)
+							text: tableView.model.headerData(modelData,
+															 Qt.Horizontal)
 						}
 					}
 				}
@@ -284,7 +300,8 @@ Item {
 							anchors.fill: parent
 							anchors.leftMargin: 5
 							verticalAlignment: Qt.AlignVCenter
-							text: tableView.model.headerData(modelData, Qt.Vertical)
+							text: tableView.model.headerData(modelData,
+															 Qt.Vertical)
 						}
 					}
 				}

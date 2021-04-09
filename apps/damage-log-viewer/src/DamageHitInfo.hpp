@@ -22,7 +22,7 @@ public:
 	~DamageHitInfo() override
 	{}
 
-	void setDamageHit(const DamageHit& dmgHit)
+	void setDamageHit(const nclog::DamageHit& dmgHit)
 	{
 		_h = dmgHit;
 		for (size_t i = 0; i < _h.damageParts.size(); i++)
@@ -42,7 +42,7 @@ public:
 		}
 	}
 
-	const DamageHit& getDamageHit() const
+	const nclog::DamageHit& getDamageHit() const
 	{
 		return _h;
 	}
@@ -59,7 +59,7 @@ public:
 
 	Q_INVOKABLE double getDamageForType(DamageTypeInfo::Type dmgType) const
 	{
-		auto p = [&dmgType](const DamagePart& dmgPart) {
+		auto p = [&dmgType](const nclog::DamagePart& dmgPart) {
 			auto t = DamageTypeInfo::typeFromString(QString::fromStdString(dmgPart.damageType));
 			return t == dmgType;
 		};
@@ -71,9 +71,9 @@ public:
 		return it->value;
 	}
 
-	std::optional<std::vector<DamagePart>::const_iterator> findDamagePartByType(DamageTypeInfo::Type dmgType) const
+	std::optional<std::vector<nclog::DamagePart>::const_iterator> findDamagePartByType(DamageTypeInfo::Type dmgType) const
 	{
-		auto p = [&dmgType](const DamagePart& dmgPart) {
+		auto p = [&dmgType](const nclog::DamagePart& dmgPart) {
 			auto t = DamageTypeInfo::typeFromString(QString::fromStdString(dmgPart.damageType));
 			return t == dmgType;
 		};
@@ -81,9 +81,9 @@ public:
 		return it == _h.damageParts.end() ? std::nullopt : std::optional(it);
 	}
 
-	std::optional<std::vector<DamagePart::Detail>::const_iterator> findResistSourceDetail(const std::vector<DamagePart::Detail>& details, DamageTypeInfo::ResistSource resistSource) const
+	std::optional<std::vector<nclog::DamagePart::Detail>::const_iterator> findResistSourceDetail(const std::vector<nclog::DamagePart::Detail>& details, DamageTypeInfo::ResistSource resistSource) const
 	{
-		auto p = [&resistSource](const DamagePart::Detail& detail) {
+		auto p = [&resistSource](const nclog::DamagePart::Detail& detail) {
 			auto rs = DamageTypeInfo::sourceFromString(QString::fromStdString(detail.source));
 			return rs == resistSource;
 		};
@@ -91,9 +91,9 @@ public:
 		return it == details.end() ? std::nullopt : std::optional(it);
 	}
 
-	std::optional<std::vector<DamagePart::Detail>::const_iterator> findPreviousResistSourceDetail(const std::vector<DamagePart::Detail>& details, DamageTypeInfo::ResistSource resistSource) const
+	std::optional<std::vector<nclog::DamagePart::Detail>::const_iterator> findPreviousResistSourceDetail(const std::vector<nclog::DamagePart::Detail>& details, DamageTypeInfo::ResistSource resistSource) const
 	{
-		auto p = [&resistSource](const DamagePart::Detail& detail) {
+		auto p = [&resistSource](const nclog::DamagePart::Detail& detail) {
 			auto rs = DamageTypeInfo::sourceFromString(QString::fromStdString(detail.source));
 			return rs == resistSource;
 		};
@@ -108,7 +108,7 @@ public:
 	}
 
 private:
-	DamageHit _h;
+	nclog::DamageHit _h;
 	QList<DamageTypeInfo::Type> _damageTypes;
 	QList<HitZoneInfo::HitZone> _hitZones;
 };

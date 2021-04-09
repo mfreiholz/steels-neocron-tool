@@ -1,8 +1,8 @@
 #pragma once
 #include <QAbstractTableModel>
-#include "DamageTypeInfo.hpp"
 #include <optional>
 #include <QHash>
+#include "DamageTypeInfo.hpp"
 
 class DamageHitInfoTableModel : public QAbstractTableModel
 {

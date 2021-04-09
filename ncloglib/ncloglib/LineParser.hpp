@@ -1,29 +1,28 @@
-#ifndef LINEPARSER_HPP
-#define LINEPARSER_HPP
-
+#pragma once
 #include <string>
 #include <iostream>
 
-class LineParser
+namespace nclog
 {
-public:
-	bool parseNextLine(std::istream& in, std::string& line)
+	class LineParser
 	{
-		while (in.good())
+	public:
+		bool parseNextLine(std::istream& in, std::string& line)
 		{
-			char c;
-			if (!in.get(c).good())
-				return false;
-			line += c;
-
-			switch (c)
+			while (in.good())
 			{
-			case '\n':
-				return true;
-			}
-		}
-		return false;
-	}
-};
+				char c;
+				if (!in.get(c).good())
+					return false;
+				line += c;
 
-#endif
+				switch (c)
+				{
+				case '\n':
+					return true;
+				}
+			}
+			return false;
+		}
+	};
+}

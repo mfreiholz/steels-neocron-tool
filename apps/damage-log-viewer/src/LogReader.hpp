@@ -85,12 +85,12 @@ public:
 
 	void run()
 	{
-		Parser parser(
+		nclog::Parser parser(
 			// on character system info
 			[]() {
 			},
 			// on damage hit
-			[&](std::unique_ptr<DamageHit> v)
+			[&](std::unique_ptr<nclog::DamageHit> v)
 			{
 				emit newLog(*v);
 			}
@@ -133,7 +133,7 @@ public:
 
 	static void declareQtTypes()
 	{
-		qRegisterMetaType<DamageHit>("DamageHit");
+		qRegisterMetaType<nclog::DamageHit>("nclog::DamageHit");
 		qmlRegisterType<LogReader>("mf.nc.DamageLogLoader", 1, 0, "DamageLogLoader");
 	}
 
@@ -161,7 +161,7 @@ signals:
 	void logFilePathChanged(const QString& path);
 	void pausedChanged(bool paused);
 	void fileSizeChanged(qint64 fileSize);
-	void newLog(DamageHit damageHit);
+	void newLog(nclog::DamageHit damageHit);
 
 private:
 	std::atomic<bool> _stop;

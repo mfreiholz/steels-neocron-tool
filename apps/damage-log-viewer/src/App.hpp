@@ -15,7 +15,7 @@ public:
 	App(QObject* parent = nullptr)
 		: QObject(parent)
 	{}
-	
+
 	~App() override
 	{}
 
@@ -32,6 +32,4 @@ public:
 private:
 	QString _version;
 };
-
-// Register types from external libs.
-Q_DECLARE_METATYPE(DamageHit)
+Q_DECLARE_METATYPE(nclog::DamageHit)

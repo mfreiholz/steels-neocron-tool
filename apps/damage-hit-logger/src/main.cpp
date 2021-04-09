@@ -1,9 +1,9 @@
 #include <iostream>
-#include <ncloglib/Parser.hpp>
-
 #include <fstream>
 #include <thread>
 #include <chrono>
+#include <ncloglib/Parser.hpp>
+using namespace nclog;
 
 void print_help()
 {
