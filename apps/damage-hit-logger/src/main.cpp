@@ -2,7 +2,7 @@
 #include <fstream>
 #include <thread>
 #include <chrono>
-#include <ncloglib/Parser.hpp>
+#include <ncloglib/CharacterLogParser.hpp>
 using namespace nclog;
 
 void print_help()
@@ -67,7 +67,7 @@ int main(int argc, char** argv)
 	std::cout << "----------------------------" << std::endl;
 
 	int counter = 0;
-	Parser parser(
+	CharacterLogParser parser(
 		// on character system info
 		[]() {
 		},

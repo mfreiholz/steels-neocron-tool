@@ -10,7 +10,7 @@
 
 namespace nclog
 {
-	class Parser
+	class CharacterLogParser
 	{
 		using OnNewCharacterSystemFunc = std::function<void()>;
 		using OnNewDamageHitFunc = std::function<void(std::unique_ptr<DamageHit>)>;
@@ -32,10 +32,10 @@ namespace nclog
 
 		std::unique_ptr<DamageHit> _dmgHit;
 
-		Parser(const Parser&);
+		CharacterLogParser(const CharacterLogParser&);
 
 	public:
-		Parser(
+		CharacterLogParser(
 			OnNewCharacterSystemFunc charSys,
 			OnNewDamageHitFunc dmgHit
 		)
@@ -44,7 +44,7 @@ namespace nclog
 		{
 		}
 
-		~Parser() = default;
+		~CharacterLogParser() = default;
 
 		void parseStream(std::istream& in)
 		{

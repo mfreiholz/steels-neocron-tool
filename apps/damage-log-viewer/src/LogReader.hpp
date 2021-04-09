@@ -6,7 +6,7 @@
 #include <QWaitCondition>
 #include <QDeadlineTimer>
 #include <atomic>
-#include <ncloglib/Parser.hpp>
+#include <ncloglib/CharacterLogParser.hpp>
 #include <ncloglib/DamageHit.hpp>
 #include "DamageHitInfo.hpp"
 
@@ -85,7 +85,7 @@ public:
 
 	void run()
 	{
-		nclog::Parser parser(
+		nclog::CharacterLogParser parser(
 			// on character system info
 			[]() {
 			},
