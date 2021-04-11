@@ -1,9 +1,2 @@
-add_executable(
-	ncloglib_dev_test
-	test_dev.cpp
-)
-
-target_link_libraries(
-	ncloglib_dev_test
-	PUBLIC ncloglib
-)
+add_executable(DamageLogParserTest DamageLogParser.test.cpp)
+target_link_libraries(DamageLogParserTest PUBLIC ncloglib)
