@@ -39,6 +39,7 @@ Item {
 				ToolButton {
 					Layout.fillWidth: false
 					text: "Change..."
+					highlighted: true
 					onClicked: {
 						gameDirFileDialog.open()
 					}
@@ -106,6 +107,12 @@ Item {
 	}
 
 	// Global events
+	Component.onCompleted: {
+		if (app.gameDirectoryPath.length > 0) {
+			app.updateNeocronDirectoryFiles()
+		}
+	}
+
 	Connections {
 		target: app
 

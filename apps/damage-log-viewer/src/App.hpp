@@ -11,6 +11,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QRegExp>
+#include <QSettings>
 #include <ncloglib/DamageHit.hpp>
 
 class App : public QObject
@@ -21,10 +22,14 @@ class App : public QObject
 public:
 	App(QObject* parent = nullptr)
 		: QObject(parent)
-	{}
+	{
+		_gameDirectoryPath = _settings.value("gameDirectoryPath").toString();
+	}
 
 	~App() override
-	{}
+	{
+		_settings.setValue("gameDirectoryPath", _gameDirectoryPath);
+	}
 
 	QString getGameDirectoryPath() const
 	{
@@ -101,5 +106,7 @@ private:
 
 	QStringList _damageLogFiles;
 	QStringList _characterLogFiles;
+
+	QSettings _settings;
 };
 Q_DECLARE_METATYPE(nclog::DamageHit)

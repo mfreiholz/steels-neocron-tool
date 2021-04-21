@@ -20,12 +20,7 @@ Item {
 	readonly property color innerRectBorderColor: "#666666"
 
 	onDamageHitInfoChanged: {
-		console.log("DamageHitInfo::onDamageHitInfoChanged() ", damageHitInfo)
 		damageHitInfoModel.setDamageHitInfo(damageHitInfo)
-		if (damageHitInfo) {
-			console.log("hitZone=", damageHitInfo.hitZones)
-			console.log("types=", damageHitInfo.damageTypes)
-		}
 	}
 
 	DamageHitInfoTableModel {

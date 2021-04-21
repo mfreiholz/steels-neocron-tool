@@ -15,7 +15,6 @@ Item {
 	readonly property color areaHighlightBorderColor: "#bbefb3"
 
 	onHitZonesChanged: {
-		console.log("onHitZonesChanged()", hitZones)
 		headShape.color = checkHighlight(HitZone.Head) ? areaHighlightBackgroundColor : areaBackgroundColor
 		torsoShape.color = checkHighlight(HitZone.Torso) ? areaHighlightBackgroundColor : areaBackgroundColor
 		legsShape.color = checkHighlight(HitZone.Legs) ? areaHighlightBackgroundColor : areaBackgroundColor

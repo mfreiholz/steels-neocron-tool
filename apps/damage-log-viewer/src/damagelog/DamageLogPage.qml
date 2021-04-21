@@ -33,7 +33,6 @@ Item {
 			console.log("DamageLogFileReader::onFileSizeChanged()", fileSize)
 		}
 		onNewLog: {
-			console.log("DamageLogFileReader::onNewLog(): ", entry)
 			model.add(entry, false)
 		}
 		onFileEnd: {

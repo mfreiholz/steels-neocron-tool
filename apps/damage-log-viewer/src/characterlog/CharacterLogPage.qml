@@ -46,7 +46,6 @@ Item {
 			console.log("DamageLogLoader::onFileSizeChanged()", fileSize)
 		}
 		onNewLog: {
-			console.log("DamageLogLoader::onNewLog(): ", damageHit)
 			damageHitInfoModel.add(damageHit)
 			if (autoSelectCurrent.checked) {
 				listView.currentIndex = listView.count - 1
