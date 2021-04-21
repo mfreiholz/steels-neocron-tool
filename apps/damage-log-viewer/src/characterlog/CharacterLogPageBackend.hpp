@@ -4,9 +4,10 @@
 #include <QDir>
 #include <QDateTime>
 #include <QFile>
-#include "../DamageHitInfo.hpp"
+#include "../characterlog/DamageHitInfo.hpp"
 #include "../CsvWriter.hpp"
 
+// @todo rename
 class DamageLogViewPageBackend : public QObject
 {
 	Q_OBJECT
@@ -43,7 +44,7 @@ public:
 			<< "RESIST_SHIELD_DAMAGE"
 			<< "RESIST_SHIELD_REDUCTION"
 			<< "RESIST_SHIELD_REDUCTION_PERCENT"
-			
+
 			<< "RESIST_ARMOR_DAMAGE"
 			<< "RESIST_ARMOR_REDUCTION"
 			<< "RESIST_ARMOR_REDUCTION_PERCENT"
@@ -112,6 +113,6 @@ public:
 
 	static void declareQtTypes()
 	{
-		qmlRegisterType<DamageLogViewPageBackend>("mf.nc.DamageLogViewPageBackend", 1, 0, "DamageLogViewPageBackend");
+		qmlRegisterType<DamageLogViewPageBackend>("mf.nc.CharacterLogPageBackend", 1, 0, "CharacterLogPageBackend");
 	}
 };

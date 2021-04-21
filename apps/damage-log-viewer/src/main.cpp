@@ -2,19 +2,23 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "App.hpp"
-#include "LogReader.hpp"
-#include "HitZoneInfo.hpp"
-#include "DamageTypeInfo.hpp"
-#include "DamageHitInfo.hpp"
-#include "DamageHitInfoListModel.hpp"
-#include "DamageHitInfoTableModel.hpp"
-#include "pages/DamageLogViewPageBackend.hpp"
+#include "characterlog/LogReader.hpp"
+#include "characterlog/HitZoneInfo.hpp"
+#include "characterlog/DamageTypeInfo.hpp"
+#include "characterlog/DamageHitInfo.hpp"
+#include "characterlog/DamageHitInfoListModel.hpp"
+#include "characterlog/DamageHitInfoTableModel.hpp"
+#include "characterlog/CharacterLogPageBackend.hpp"
+#include "damagelog/DamageLogFileReader.hpp"
+#include "damagelog/DamageLogPageBackend.hpp"
+#include "damagelog/DamageMeterModel.hpp"
 
 int main(int argc, char** argv)
 {
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
+
 	QGuiApplication qtapp(argc, argv);
 	qtapp.setOrganizationName("mfreiholz.de");
 	qtapp.setOrganizationDomain("https://mfreiholz.de");
@@ -28,7 +32,10 @@ int main(int argc, char** argv)
 	DamageHitInfoListModel::declareQtTypes();
 	DamageHitInfoTableModel::declareQtTypes();
 	LogReader::declareQtTypes();
+	DamageLogFileReader::declareQtTypes();
 	DamageLogViewPageBackend::declareQtTypes();
+	DamageMeterModel::declareQtTypes();
+	DamageLogPageBackend::declareQtTypes();
 
 	// setup QML engine and context
 	QQmlApplicationEngine engine;

@@ -9,6 +9,7 @@
 #include <regex>
 #include <memory>
 #include <functional>
+#include <optional>
 #include <ncloglib/LineParser.hpp>
 
 namespace nclog
@@ -29,12 +30,20 @@ namespace nclog
 		// "time" is a floating point number in log file, but since we can not
 		// exactly compare floating point values in code we transform it to an
 		// integer (*1000).
-		std::string time = 0;
+		std::string time;
 		std::string who;
 		std::vector<std::pair<std::string, std::string>> values; // WeaponID=1609; DmgID=???; DmgFac=0.0; ...
 		std::string damageCause; // Heavy!, Melee!, ...
 		std::string damageType; // Collision!, Over Time!, ...
 		std::vector<std::pair<std::string, std::string>> details;
+
+		std::optional<std::string> getValue(const std::string& key) const
+		{
+			auto it = std::find_if(std::begin(values), std::end(values), [&key](const auto& v) {
+				return v.first.compare(key) == 0;
+			});
+			return (it != std::end(values)) ? std::make_optional(it->second) : std::nullopt;
+		}
 	};
 
 	/*
@@ -114,7 +123,7 @@ namespace nclog
 					posEnd = line.find(',', posBegin);
 					auto val = line.substr(posBegin, posEnd == std::string::npos ? std::string::npos : posEnd - posBegin);
 
-					_entry->details.push_back(std::make_pair(key, val));
+					_entry->values.push_back(std::make_pair(key, val));
 				}
 			}
 			else if (_entry && (pos = line.find("DamageCause: ")) == 0)

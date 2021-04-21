@@ -5,16 +5,15 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include <QDeadlineTimer>
+#include <QQmlEngine>
 #include <atomic>
-#include <ncloglib/CharacterLogParser.hpp>
-#include <ncloglib/DamageHit.hpp>
-#include "DamageHitInfo.hpp"
+#include <ncloglib/DamageLogParser.hpp>
 
 /*!
 	Reads from log file until the object is destroyed.
 	Caller can pause reading from file.
 */
-class LogReader : public QThread
+class DamageLogFileReader : public QThread
 {
 	Q_OBJECT
 	Q_PROPERTY(QString logFilePath READ getLogFilePath WRITE setLogFilePath NOTIFY logFilePathChanged)
@@ -22,13 +21,13 @@ class LogReader : public QThread
 	Q_PROPERTY(bool paused READ isPaused WRITE setPause NOTIFY pausedChanged)
 
 public:
-	LogReader(QObject* parent = nullptr)
+	DamageLogFileReader(QObject* parent = nullptr)
 		: QThread(parent)
 		, _stop(false)
 		, _paused(true)
 	{}
 
-	~LogReader() override
+	~DamageLogFileReader() override
 	{
 		stop();
 	}
@@ -83,18 +82,12 @@ public:
 		emit pausedChanged(pause);
 	}
 
-	void run()
+	void run() override
 	{
-		nclog::CharacterLogParser parser(
-			// on character system info
-			[]() {
-			},
-			// on damage hit
-			[&](std::unique_ptr<nclog::DamageHit> v)
-			{
-				emit newLog(*v);
-			}
-		);
+		nclog::DamageLogParser parser; // @todo hold as member and call "stop" in this->stop()
+		parser.onNewEntryFunc = [&](std::unique_ptr<nclog::DamageLogEntry> entry){
+			emit newLog(*entry);
+		};
 		std::streampos offset = -1;
 		while (!_stop)
 		{
@@ -115,10 +108,10 @@ public:
 			else
 				in.seekg(offset);
 			offset = fileSize;
-			std::cout << "offset: " << offset << std::endl;
 
 			parser.parseStream(in);
 			in.close();
+			emit fileEnd(offset);
 
 			// Need pause?
 			QMutexLocker l(&_mutex);
@@ -127,14 +120,14 @@ public:
 				_pauseCondition.wait(&_mutex, QDeadlineTimer(std::chrono::milliseconds(1000)));
 			}
 			l.unlock();
-			QThread::currentThread()->msleep(500);
+			QThread::currentThread()->msleep(1000);
 		}
 	}
 
 	static void declareQtTypes()
 	{
-		qRegisterMetaType<nclog::DamageHit>("nclog::DamageHit");
-		qmlRegisterType<LogReader>("mf.nc.DamageLogLoader", 1, 0, "DamageLogLoader");
+		qRegisterMetaType<nclog::DamageLogEntry>("nclog::DamageLogEntry");
+		qmlRegisterType<DamageLogFileReader>("mf.nc.DamageLogFileReader", 1, 0, "DamageLogFileReader");
 	}
 
 protected:
@@ -161,7 +154,8 @@ signals:
 	void logFilePathChanged(const QString& path);
 	void pausedChanged(bool paused);
 	void fileSizeChanged(qint64 fileSize);
-	void newLog(nclog::DamageHit damageHit);
+	void newLog(nclog::DamageLogEntry entry);
+	void fileEnd(int offset);
 
 private:
 	std::atomic<bool> _stop;

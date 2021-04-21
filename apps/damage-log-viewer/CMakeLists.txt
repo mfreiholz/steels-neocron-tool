@@ -22,16 +22,21 @@ add_executable(
 	src/main.cpp
 
 	src/App.hpp
-	src/DamageTypeInfo.hpp
-	src/HitZoneInfo.hpp
-	src/DamageHitInfo.hpp
-	src/LogReader.hpp
 	src/CsvWriter.hpp
 
-	src/DamageHitInfoListModel.hpp
-	src/DamageHitInfoTableModel.hpp
+	src/characterlog/DamageTypeInfo.hpp
+	src/characterlog/HitZoneInfo.hpp
+	src/characterlog/DamageHitInfo.hpp
+	src/characterlog/LogReader.hpp
+	src/characterlog/DamageHitInfoListModel.hpp
+	src/characterlog/DamageHitInfoTableModel.hpp
+	src/characterlog/CharacterLogPageBackend.hpp
 
-	src/pages/DamageLogViewPageBackend.hpp
+	src/damagelog/DamageLogEntryInfo.hpp
+	src/damagelog/DamageLogPageBackend.hpp
+	src/damagelog/DamageLogFileReader.hpp
+	src/damagelog/DamageLogListModel.hpp
+	src/damagelog/DamageMeterModel.hpp
 )
 
 target_link_libraries(

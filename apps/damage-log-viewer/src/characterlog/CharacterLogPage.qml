@@ -6,7 +6,7 @@ import QtQuick.Controls.Universal 2.12
 
 import mf.nc.DamageHitInfoListModel 1.0
 import mf.nc.DamageLogLoader 1.0
-import mf.nc.DamageLogViewPageBackend 1.0
+import mf.nc.CharacterLogPageBackend 1.0
 
 import "qrc:/qml/components"
 
@@ -28,7 +28,7 @@ Item {
 		console.log("DamageLogViewPage::onDestruction()")
 	}
 
-	DamageLogViewPageBackend {
+	CharacterLogPageBackend {
 		id: backend
 	}
 
@@ -66,6 +66,7 @@ Item {
 		id: damageHitInfoModel
 	}
 
+
 	/*
 		Table + Hit Zones
 	*/
@@ -101,6 +102,7 @@ Item {
 			width: 200
 		}
 	}
+
 
 	/*
 		Hit list + Options
@@ -170,7 +172,7 @@ Item {
 			width: 200
 			Label {
 				Layout.fillWidth: true
-				text: "Size: " + loader.fileSize+" bytes"
+				text: "Size: " + loader.fileSize + " bytes"
 			}
 			CheckBox {
 				Layout.fillWidth: true
@@ -199,108 +201,3 @@ Item {
 		}
 	}
 }
-
-
-//	RowLayout {
-//		y: parent.height
-//		x: parent.width
-
-//		Pane {
-//			id: leftPane
-//			Layout.fillHeight: true
-//			Layout.preferredWidth: 0.75 * parent.width
-
-//			ColumnLayout {
-//				height: parent.height
-//				width: parent.width
-
-//				GroupBox {
-//					Layout.fillHeight: true
-//					Layout.fillWidth: true
-//					title: "Details"
-
-
-//				}
-
-//				GroupBox {
-//					id: logGroupBox
-//					Layout.fillHeight: true
-//					Layout.fillWidth: true
-//					title: "Damage Log List (Count = "+damageHitInfoModel.rowCount()+"; File Size = "+loader.fileSize+" bytes)"
-
-//					ColumnLayout {
-//						anchors.fill: parent
-
-//						ListView {
-//							id: listView
-//							Layout.fillHeight: true
-//							Layout.fillWidth: true
-//							clip: true
-//							currentIndex: -1
-//							model: damageHitInfoModel
-//							highlightFollowsCurrentItem: true
-//							highlightMoveDuration: 150
-//							onCurrentIndexChanged: {
-//								var currObj = damageHitInfoModel.get(currentIndex)
-//								damageHitInfoTable.damageHitInfo = currObj
-//								playerHitZones.hitZones = currObj.hitZones
-//							}
-//							delegate: RowLayout {
-//								width: listView.width
-//								Label {
-//									Layout.fillWidth: true
-//									padding: 3
-//									text: model.title
-//									MouseArea {
-//										anchors.fill: parent
-//										onClicked: {
-//											listView.currentIndex = index
-//										}
-//									}
-//								}
-//							}
-//							highlight: Rectangle {
-//								color: Universal.accent
-//							}
-//						}
-
-//						RowLayout {
-//							Layout.fillWidth: true
-//							Item {
-//								Layout.fillWidth: true
-//							}
-//							CheckBox {
-//								id: pauseCheckbox
-//								text: "Live Update"
-//								checked: false
-//							}
-//							CheckBox {
-//								id: autoSelectCurrent
-//								text: "Auto select newest log"
-//								checked: false
-//								onCheckedChanged: {
-//									console.log("ASDFASDFASDF", checked)
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-
-//		Pane {
-//			id: rightPane
-//			Layout.fillHeight: true
-//			Layout.preferredWidth: 0.25 * parent.width
-
-
-//		}
-//	}
-
-//	MessageDialog {
-//		id: errorDialog
-//		title: "Error"
-//		text: ""
-//		onAccepted: {
-//		}
-//	}
