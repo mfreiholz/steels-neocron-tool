@@ -46,3 +46,5 @@ target_link_libraries(
 
 target_compile_definitions(damage-log-viewer PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(damage-log-viewer PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Multimedia)
+
+install(TARGETS damage-log-viewer)

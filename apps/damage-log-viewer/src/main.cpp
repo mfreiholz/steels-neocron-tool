@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QFontDatabase>
 #include "App.hpp"
 #include "characterlog/LogReader.hpp"
 #include "characterlog/HitZoneInfo.hpp"
@@ -37,9 +38,12 @@ int main(int argc, char** argv)
 	DamageMeterModel::declareQtTypes();
 	DamageLogPageBackend::declareQtTypes();
 
+	const QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+
 	// setup QML engine and context
 	QQmlApplicationEngine engine;
 	engine.rootContext()->setContextProperty("app", &myApp);
+	engine.rootContext()->setContextProperty("fixedFont", fixedFont);
 
 	const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
 	QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &qtapp, [url](QObject* obj, const QUrl& objUrl)

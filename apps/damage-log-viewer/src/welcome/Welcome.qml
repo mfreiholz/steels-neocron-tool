@@ -23,21 +23,46 @@ Item {
 			left: parent.left
 		}
 		height: 80
-		Frame {
+		Item {
 			anchors.fill: parent
-			anchors.margins: 5
+			anchors.margins: 12
 			RowLayout {
 				anchors.fill: parent
 				Label {
 					Layout.fillWidth: false
+					Layout.fillHeight: true
+					padding: 5
 					text: "Game Directory: "
+					verticalAlignment: Qt.AlignVCenter
+					background: Rectangle {
+						color: Universal.baseLowColor
+					}
+					font.bold: true
 				}
 				Label {
 					Layout.fillWidth: true
+					Layout.fillHeight: true
+					padding: 5
 					text: app.gameDirectoryPath
+					font: fixedFont
+					verticalAlignment: Qt.AlignVCenter
+					background: Rectangle {
+						color: Universal.baseLowColor
+					}
 				}
-				ToolButton {
+				Button {
 					Layout.fillWidth: false
+					Layout.fillHeight: true
+					text: "Refresh"
+					icon.source: "qrc:/res/refresh_white_24dp.svg"
+					display: AbstractButton.IconOnly
+					onClicked: {
+						app.updateNeocronDirectoryFiles()
+					}
+				}
+				Button {
+					Layout.fillWidth: false
+					Layout.fillHeight: true
 					text: "Change..."
 					highlighted: true
 					onClicked: {
@@ -71,10 +96,14 @@ Item {
 		}
 		Pane {
 			anchors.fill: parent
+			leftPadding: 12
+			rightPadding: 12
+			topPadding: 0
+			bottomPadding: 12
 			Row {
 				id: tileRow
 				height: parent.height
-				spacing: 5
+				spacing: 10
 
 				TileWithFiles {
 					id: damageLogTile
@@ -115,11 +144,9 @@ Item {
 
 	Connections {
 		target: app
-
 		function onGameDirectoryPathChanged() {
 			app.updateNeocronDirectoryFiles()
 		}
-
 		function onGameDirectoryFilesChanged(damageLogFiles, characterLogFiles) {
 			damageLogTile.filePaths = damageLogFiles
 			characterLogTile.filePaths = characterLogFiles

@@ -8,6 +8,7 @@
         <file>res/info-white-24dp.svg</file>
         <file>res/CharacterLogTile.md</file>
         <file>res/DamageLogTile.md</file>
+        <file>res/refresh_white_24dp.svg</file>
     </qresource>
     <qresource prefix="/qml">
         <file>main.qml</file>
