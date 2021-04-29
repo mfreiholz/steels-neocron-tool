@@ -63,12 +63,12 @@ Item {
 			clip: true
 			currentIndex: -1
 			model: model
-			spacing: 5
+			spacing: 2
 			delegate: RowLayout {
 				width: listView.width
 				Item {
 					Layout.fillWidth: true
-					Layout.preferredHeight: 25
+					Layout.preferredHeight: 35
 					Rectangle {
 						anchors.top: parent.top
 						anchors.bottom: parent.bottom
@@ -89,11 +89,15 @@ Item {
 						}
 						Label {
 							Layout.alignment: Qt.AlignCenter
-							text: model.summary
+							text: formatNumber(model.summary)
+							font: fixedFont
 						}
 						Label {
-							Layout.alignment: Qt.AlignCenter
+							//Layout.alignment: Qt.AlignCenter
+							Layout.preferredWidth: 100
+							horizontalAlignment: Qt.AlignRight
 							text: model.percentFormatted + "%"
+							font: fixedFont
 						}
 					}
 				}
@@ -124,5 +128,11 @@ Item {
 				Layout.fillWidth: true
 			}
 		}
+	}
+
+	// Helper functions
+
+	function formatNumber(val) {
+		return val.toFixed(3)
 	}
 }

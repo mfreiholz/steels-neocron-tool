@@ -31,7 +31,7 @@ public:
 	{
 		static QVector<QString> fireStrings = { "fire", "feuer" };
 		static QVector<QString> energyStrings = { "energy", "energie" };
-		static QVector<QString> xrayStrings = { "xray", "strahlung" };
+		static QVector<QString> xrayStrings = { "xray", "x-ray" "strahlung" };
 		static QVector<QString> poisonStrings = { "poison", "gift" };
 		static QVector<QString> forceStrings = { "force", "hieb" };
 		static QVector<QString> pierceStrings = { "piercing", "stich" };
@@ -71,8 +71,10 @@ public:
 			return QStringLiteral("force");
 		case Type::Piercing:
 			return QStringLiteral("piercing");
+		case Type::UnknownDamageType:
+			return QStringLiteral();
 		}
-		return QString();
+		return QStringLiteral();
 	}
 
 	static ResistSource sourceFromString(const QString& sourceString)

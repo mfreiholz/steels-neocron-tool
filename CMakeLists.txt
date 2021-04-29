@@ -6,7 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Manuel's environment
+set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/install")
 set(CMAKE_PREFIX_PATH "D:/Qt/5.15.1/msvc2019_64")
+set(QT_DIR "D:/Qt/5.15.1/msvc2019_64")
 set(QT_VERSION_MAJOR 5)
 
 add_subdirectory(ncloglib)
