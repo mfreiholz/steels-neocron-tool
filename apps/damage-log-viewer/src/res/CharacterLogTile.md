@@ -1,7 +1,8 @@
 # Character Log
 Open your character log and analyze your resist values.
 
-__Example file location:__ `$NEOCRON/logs/<YourCharacter>_00.log`
+__Example file location:__\
+`$NEOCRON/logs/<YourCharacter>_00.log`
 
 ---
 

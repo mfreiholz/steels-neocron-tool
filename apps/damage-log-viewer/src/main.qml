@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.3
 import QtQuick.Controls.Universal 2.12
+import Qt.labs.qmlmodels 1.0
 import "qrc:/qml/welcome"
 
 ApplicationWindow {
@@ -11,7 +12,6 @@ ApplicationWindow {
 	width: 1280
 	height: 800
 	visible: true
-	title: Qt.application.displayName + " - " + Qt.application.version
 	onActiveFocusItemChanged: console.log("ApplicationWindow::onActiveFocusItemChanged()", activeFocusItem)
 
 	header: Rectangle {
@@ -30,7 +30,7 @@ ApplicationWindow {
 				id: titleLabel
 				Layout.fillHeight: true
 				Layout.fillWidth: true
-				text: window.title
+				text: Qt.application.displayName + " " + Qt.application.version
 				horizontalAlignment: Qt.AlignHCenter
 				verticalAlignment: Qt.AlignVCenter
 				color: "black"

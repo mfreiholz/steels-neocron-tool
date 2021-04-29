@@ -1,14 +1,27 @@
+;
+; Precondition
+; - Run "deploy.bat" before running this script.
+;
+
+#define MyAppVersion "1.1.0"
 #define MyAppName "Steel's Neocron Tool"
-#define AppBuildDir "../build-neocron-log-parser-Desktop_Qt_5_15_1_MSVC2019_64bit-Release"
+#define MyAppNameFileSafe "SteelsNeocronTool"
 
 [Setup]
 AppId={{89B4B71E-B90D-4726-BFD8-C6A027A27726}
+AppName={#MyAppName}
+AppVersion={#MyAppVersion}
+OutputBaseFilename={#MyAppNameFileSafe}-{#MyAppVersion}-Setup
+OutputManifestFile={#MyAppNameFileSafe}-{#MyAppVersion}-Setup-Manifest.txt
+DefaultDirName={autopf64}\{#MyAppNameFileSafe}
+SourceDir=..\install\bin
+OutputDir=..\
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: ""; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
+Source: "*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
 
-[Run]
-Filename: "vcredist_msvc2019_x64.exe"; Parameters: "/install /quiet"; Flags: skipifdoesntexist; StatusMsg: "Installing VC Redistributable 2019 (64-bit)... This may take a while";
+[Icons]
+Name: "{userdesktop}\{#MyAppNameFileSafe}"; Filename: "{app}\SteelsNeocronTool.exe"

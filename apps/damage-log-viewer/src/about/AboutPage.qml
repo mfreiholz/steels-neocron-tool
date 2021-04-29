@@ -1,22 +1,23 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.12
 
 Pane {
 	id: root
 
-	Label {
+	ColumnLayout {
 		anchors.fill: parent
-		wrapMode: Text.Wrap
-		textFormat: Text.MarkdownText
-		text: "
-# Neocron Log Viewer
 
-## Contributors
-### __Development__
-- Manuel Freiholz aka _Gainwar Steel_
-
-### __Data Research & Calculations__
-- Dominik Freiholz aka _Aroki Steel_
-"
+		Label {
+			text: Qt.application.displayName + " (" + Qt.application.version + ")"
+			font.pointSize: 24.0
+		}
+		Label {
+			Layout.fillWidth: true
+			Layout.fillHeight: true
+			wrapMode: Text.Wrap
+			textFormat: Text.MarkdownText
+			text: app.readTextFileContents(":/res/AboutPage.md")
+		}
 	}
 }

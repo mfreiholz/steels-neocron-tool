@@ -18,6 +18,7 @@ add_executable(
 
 	${GUI_TYPE}
 
+	src/res/app.rc
 	src/qml.qrc
 	src/main.cpp
 
@@ -46,5 +47,6 @@ target_link_libraries(
 
 target_compile_definitions(damage-log-viewer PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(damage-log-viewer PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::Multimedia)
+set_target_properties(damage-log-viewer PROPERTIES RUNTIME_OUTPUT_NAME "SteelsNeocronTool")
 
 install(TARGETS damage-log-viewer)
