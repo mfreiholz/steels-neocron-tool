@@ -13,7 +13,10 @@
    version="1.1"
    id="svg8"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="icon-64px.svg">
+   sodipodi:docname="icon-64px.svg"
+   inkscape:export-filename="D:\Projects\NeocronLogParser\Source\neocron-log-parser\apps\damage-log-viewer\src\res\app.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
   <defs
      id="defs2">
     <rect
@@ -65,9 +68,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.0710678"
-     inkscape:cx="58.413671"
-     inkscape:cy="47.900616"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="-8.7037845"
+     inkscape:cy="48.255772"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -75,8 +78,8 @@
      showguides="true"
      inkscape:guide-bbox="true"
      units="px"
-     inkscape:window-width="2560"
-     inkscape:window-height="1361"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
      inkscape:window-x="-9"
      inkscape:window-y="-9"
      inkscape:window-maximized="1" />
