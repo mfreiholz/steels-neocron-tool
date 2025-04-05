@@ -11,7 +11,7 @@ Parses Neocron's log files and displays it's information.
   - Live update while game is running
 
 ## Download
-[Download from here](https://drive.google.com/drive/folders/1KhpADdxU8OFcuKMqCyrBIOTBiFjE0UbK?usp=sharing)
+[Download from here](https://github.com/mfreiholz/steels-neocron-tool/releases)
 the newest version.
 
 ## Upcoming Features & Ideas
