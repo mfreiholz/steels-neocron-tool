@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
 #include <iostream>
+#include <string>
 
 namespace nclog
 {
@@ -21,9 +21,9 @@ namespace nclog
 
 				switch (c)
 				{
-				case '\n':
-					_lineCount++;
-					return true;
+					case '\n':
+						_lineCount++;
+						return true;
 				}
 			}
 			return false;
@@ -31,7 +31,7 @@ namespace nclog
 
 		void trimRight(std::string& line)
 		{
-			char trimchars[3] = { '\n', '\r', ' ' };
+			char trimchars[3] = {'\n', '\r', ' '};
 			line.erase(line.find_last_not_of(trimchars, std::string::npos, sizeof(trimchars)) + 1);
 		}
 

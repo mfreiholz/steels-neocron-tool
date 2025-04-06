@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtCharts 2.15
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+//import QtCharts
 import mf.nc.DamageLogPageBackend 1.0
 import mf.nc.DamageLogFileReader 1.0
 import mf.nc.DamageMeterModel 1.0
@@ -23,29 +23,24 @@ Item {
 		id: loader
 		logFilePath: root.logFilePath
 		paused: !liveUpdateCheckBox.checked
-		onLogFilePathChanged: {
-			console.log("DamageLogFileReader::onLogFilePathChanged()", path)
+		onLogFilePathChanged: function(path) {
 			if (path.length > 0) {
 				loader.start()
 			}
 		}
 		onFileSizeChanged: {
-			console.log("DamageLogFileReader::onFileSizeChanged()", fileSize)
 		}
-		onNewLog: {
+		onNewLog: function(entry) {
 			model.add(entry, false)
 		}
 		onFileEnd: {
-			console.log("DamageLogFileReader::onFileEnd(): ", offset)
 			model.updateRowStates()
 		}
 		onErrorOccurred: {
-			console.log("DamageLogFileReader::onErrorOccurred()", errorString)
 			//			errorDialog.text = errorString
 			//			errorDialog.open()
 		}
 		onFinished: {
-			console.log("DamageLogFileReader::onFinished()")
 		}
 	}
 

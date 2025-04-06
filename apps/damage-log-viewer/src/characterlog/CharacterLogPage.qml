@@ -1,8 +1,8 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Dialogs 1.3
-import QtQuick.Controls.Universal 2.12
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Dialogs
+import QtQuick.Controls.Universal
 
 import mf.nc.DamageHitInfoListModel 1.0
 import mf.nc.DamageLogLoader 1.0
@@ -20,14 +20,6 @@ Item {
 	Keys.onUpPressed: listView.decrementCurrentIndex()
 	Keys.onDownPressed: listView.incrementCurrentIndex()
 
-	Component.onCompleted: {
-		console.log("DamageLogViewPage::onCompleted()")
-	}
-
-	Component.onDestruction: {
-		console.log("DamageLogViewPage::onDestruction()")
-	}
-
 	CharacterLogPageBackend {
 		id: backend
 	}
@@ -36,28 +28,24 @@ Item {
 		id: loader
 		logFilePath: root.logFilePath
 		paused: !liveUpdateCheckBox.checked
-		onLogFilePathChanged: {
-			console.log("DamageLogLoader::onLogFilePathChanged()", path)
+		onLogFilePathChanged: function (path) {
 			if (path.length > 0) {
 				loader.start()
 			}
 		}
 		onFileSizeChanged: {
-			console.log("DamageLogLoader::onFileSizeChanged()", fileSize)
 		}
-		onNewLog: {
+		onNewLog: function (damageHit) {
 			damageHitInfoModel.add(damageHit)
 			if (autoSelectCurrent.checked) {
 				listView.currentIndex = listView.count - 1
 			}
 		}
 		onErrorOccurred: {
-			console.log("DamageLogLoader::onErrorOccurred()", errorString)
 			errorDialog.text = errorString
 			errorDialog.open()
 		}
 		onFinished: {
-			console.log("DamageLogLoader::onFinished()")
 		}
 	}
 

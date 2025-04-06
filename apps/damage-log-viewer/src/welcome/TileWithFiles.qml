@@ -1,9 +1,9 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
-import QtQuick.Dialogs 1.3
-import QtQuick.Controls.Universal 2.12
+import QtQuick
+import QtQuick.Window
+import QtQuick.Layouts
+import QtQuick.Controls
+import QtQuick.Dialogs
+import QtQuick.Controls.Universal
 
 Item {
 	id: root
@@ -99,16 +99,17 @@ Item {
 
 	FileDialog {
 		id: fileDialog
-		selectExisting: true
-		selectFolder: false
-		selectMultiple: false
+		fileMode: FileDialog.OpenFile
+		//selectExisting: true
+		//selectFolder: false
+		//selectMultiple: false
 		visible: false
-		folder: app.urlFromPath(app.gameDirectoryPath)
+		currentFolder: app.urlFromPath(app.gameDirectoryPath)
 		onAccepted: {
-			if (fileUrl.length <= 0) {
+			if (selectedFile.length <= 0) {
 				return
 			}
-			root.fileSelected(app.urlLocalFile(fileDialog.fileUrl))
+			root.fileSelected(app.urlLocalFile(fileDialog.selectedFile))
 		}
 	}
 }

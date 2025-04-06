@@ -32,9 +32,10 @@ public:
 			if (t == DamageTypeInfo::Type::UnknownDamageType)
 			{
 				qDebug() << "Unknown damage type in log, we may need a translation for it?" << s;
-				continue;
+                //continue;
 			}
-			_damageTypes.append(t);
+            else
+                _damageTypes.append(t);
 
 			auto hz = HitZoneInfo::hitZoneFromInt(_h.damageParts.at(i).hitZone);
 			if (!_hitZones.contains(hz))

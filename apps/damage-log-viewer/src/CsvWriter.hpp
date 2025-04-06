@@ -21,7 +21,7 @@ public:
 		, _separatorChar(separator)
 		, _textStream(_device)
 	{
-		_textStream.setCodec("UTF-8");
+		_textStream.setEncoding(QStringConverter::Utf8);
 	}
 
 	~CsvWriter()

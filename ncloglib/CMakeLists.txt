@@ -1,10 +1,13 @@
-add_library(ncloglib INTERFACE)
+set(name "ncloglib")
+add_library(${name} STATIC)
 target_sources(
-	ncloglib
-	INTERFACE
-	ncloglib/DamageHit.hpp
-	ncloglib/LineParser.hpp
-	ncloglib/CharacterLogParser.hpp
-	ncloglib/DamageLogParser.hpp
+	${name}
+	PUBLIC
+	        DamageHit.hpp
+		LineParser.hpp
+		CharacterLogParser.hpp
+		DamageLogParser.hpp
+	PRIVATE
+	        library.cpp
 )
-target_include_directories(ncloglib INTERFACE .)
+target_include_directories(ncloglib PUBLIC ../)

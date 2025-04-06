@@ -15,7 +15,7 @@ public:
 	static void declareQtTypes()
 	{
 		qRegisterMetaType<HitZoneInfo::HitZone>();
-		qmlRegisterUncreatableType<HitZoneInfo>("mf.nc.Types", 1, 0, "HitZone", "Enum only!");
+        qmlRegisterUncreatableType<HitZoneInfo>("mf.nc.Types", 1, 0, "HitZone", "Enum only!");
 	}
 
 	static HitZone hitZoneFromInt(int zone)

@@ -1,16 +1,15 @@
 #pragma once
+#include "LineParser.hpp"
 #include <assert.h>
 #include <atomic>
-#include <inttypes.h>
-#include <string>
-#include <vector>
-#include <utility>
-#include <istream>
-#include <regex>
-#include <memory>
 #include <functional>
+#include <istream>
+#include <memory>
 #include <optional>
-#include <ncloglib/LineParser.hpp>
+#include <regex>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace nclog
 {
@@ -129,12 +128,12 @@ namespace nclog
 			else if (_entry && (pos = line.find("DamageCause: ")) == 0)
 			{
 				_entry->damageCause = line.substr(13, std::string::npos);
-//				std::cout << "damageCause: [" << _entry->damageCause << "]" << std::endl;
+				//				std::cout << "damageCause: [" << _entry->damageCause << "]" << std::endl;
 			}
 			else if (_entry && (pos = line.find("DamageType: ")) == 0)
 			{
 				_entry->damageType = line.substr(12, std::string::npos);
-//				std::cout << "damageType: [" << _entry->damageType << "]" << std::endl;
+				//				std::cout << "damageType: [" << _entry->damageType << "]" << std::endl;
 			}
 			else if (_entry && (pos = line.find(":")) != std::string::npos)
 			{
@@ -167,10 +166,3 @@ namespace nclog
 		std::unique_ptr<DamageLogEntry> _entry;
 	};
 }
-
-//		int weaponID = 0;
-//		int damageID = 0;
-//		double damageFactor = 0.0;
-//		double energy = 0.;
-//		double effect = 0.;
-//		double height = 0.;

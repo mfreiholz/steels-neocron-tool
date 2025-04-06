@@ -1,19 +1,36 @@
 #pragma once
 #include <QDebug>
-#include <QVector>
-#include <QObject>
 #include <QMetaType>
+#include <QObject>
 #include <QQmlApplicationEngine>
+#include <QVector>
 
 class DamageTypeInfo : public QObject
 {
 	Q_OBJECT
 
 public:
-	enum class Type { Fire, Energy, XRay, Poison, Force, Piercing, UnknownDamageType };
+	enum class Type
+	{
+		Fire,
+		Energy,
+		XRay,
+		Poison,
+		Force,
+		Piercing,
+		Full,
+		UnknownDamageType
+	};
 	Q_ENUM(Type)
 
-	enum class ResistSource { Psi, Shield, Armor, Skill, UnknownResistSource };
+	enum class ResistSource
+	{
+		Psi,
+		Shield,
+		Armor,
+		Skill,
+		UnknownResistSource
+	};
 	Q_ENUM(ResistSource)
 
 	DamageTypeInfo(QObject* parent = nullptr)
@@ -29,12 +46,13 @@ public:
 
 	static Type typeFromString(const QString& typeString)
 	{
-		static QVector<QString> fireStrings = { "fire", "feuer" };
-		static QVector<QString> energyStrings = { "energy", "energie" };
-		static QVector<QString> xrayStrings = { "xray", "x-ray", "strahlung" };
-		static QVector<QString> poisonStrings = { "poison", "gift" };
-		static QVector<QString> forceStrings = { "force", "hieb" };
-		static QVector<QString> pierceStrings = { "piercing", "stich" };
+		static QVector<QString> fireStrings = {"fire", "feuer"};
+		static QVector<QString> energyStrings = {"energy", "energie"};
+		static QVector<QString> xrayStrings = {"xray", "x-ray", "strahlung"};
+		static QVector<QString> poisonStrings = {"poison", "gift"};
+		static QVector<QString> forceStrings = {"force", "hieb"};
+		static QVector<QString> pierceStrings = {"piercing", "stich"};
+		static QVector<QString> fullDmgStrings = {"fulldamage", "voller schaden"};
 
 		const QString s = typeString.toLower().trimmed();
 		Type t = Type::UnknownDamageType;
@@ -50,6 +68,8 @@ public:
 			t = Type::Force;
 		else if (pierceStrings.contains(s))
 			t = Type::Piercing;
+		else if (fullDmgStrings.contains(s))
+			t = Type::Full;
 		else
 			qDebug() << "Unknown DamageType" << typeString;
 		return t;
@@ -59,20 +79,22 @@ public:
 	{
 		switch (damageType)
 		{
-		case Type::Fire:
-			return QStringLiteral("fire");
-		case Type::Energy:
-			return QStringLiteral("energy");
-		case Type::XRay:
-			return QStringLiteral("xray");
-		case Type::Poison:
-			return QStringLiteral("poison");
-		case Type::Force:
-			return QStringLiteral("force");
-		case Type::Piercing:
-			return QStringLiteral("piercing");
-		case Type::UnknownDamageType:
-			return QString();
+			case Type::Fire:
+				return QStringLiteral("fire");
+			case Type::Energy:
+				return QStringLiteral("energy");
+			case Type::XRay:
+				return QStringLiteral("xray");
+			case Type::Poison:
+				return QStringLiteral("poison");
+			case Type::Force:
+				return QStringLiteral("force");
+			case Type::Piercing:
+				return QStringLiteral("piercing");
+			case Type::Full:
+				return QStringLiteral("full");
+			case Type::UnknownDamageType:
+				return QString();
 		}
 		return QString();
 	}

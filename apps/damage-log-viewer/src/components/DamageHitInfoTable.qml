@@ -1,8 +1,8 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import QtQuick.Controls.Universal 2.12
-import Qt.labs.qmlmodels 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Controls.Universal
+import Qt.labs.qmlmodels
 
 import mf.nc.DamageHitInfo 1.0
 import mf.nc.DamageHitInfoTableModel 1.0

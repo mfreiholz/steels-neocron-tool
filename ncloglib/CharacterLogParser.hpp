@@ -1,12 +1,12 @@
 #pragma once
-#include <iostream>
-#include <string>
-#include <regex>
-#include <functional>
-#include <atomic>
+#include "DamageHit.hpp"
+#include "LineParser.hpp"
 #include <assert.h>
-#include <ncloglib/LineParser.hpp>
-#include <ncloglib/DamageHit.hpp>
+#include <atomic>
+#include <functional>
+#include <iostream>
+#include <regex>
+#include <string>
 
 namespace nclog
 {
@@ -16,9 +16,9 @@ namespace nclog
 		using OnNewDamageHitFunc = std::function<void(std::unique_ptr<DamageHit>)>;
 
 		const std::string LINE_CHARACTER_SYSTEM = "Character System:";
-		const std::regex MATCH_RX_DAMAGE_HIT_PART_BEGIN = std::regex("^Damage: ([0-9\\.]+) Target ([A-Za-z]+) HitZone ([0-9]+) \\- Part ([0-9]+)$", std::regex::optimize | std::regex::ECMAScript);
-		const std::regex MATCH_RX_DAMAGE_HIT_PART_DETAIL = std::regex("^Damage: ([0-9\\.]+) \\(Reduction: ([0-9\\.]+) - ([0-9\\.]+) Percentage\\) - Damage (caused|reduced) by ([A-Za-z ]+)$", std::regex::optimize | std::regex::ECMAScript);
-		const std::regex MATCH_RX_DAMAGE_HIT_PART_END = std::regex("^Results of this target: Damage ([0-9\\.]+) \\(Reduction: ([0-9\\.]+) - ([0-9\\.]+) Percentage\\) \\- ResistanceCap: ([0-9\\.]+)!$", std::regex::optimize | std::regex::ECMAScript);
+		const std::regex MATCH_RX_DAMAGE_HIT_PART_BEGIN = std::regex("^Damage: ([0-9\\.\\-]+) Target ([A-Za-z0-9 ]+) HitZone ([0-9]+) \\- Part ([0-9]+)$", std::regex::optimize | std::regex::ECMAScript);
+		const std::regex MATCH_RX_DAMAGE_HIT_PART_DETAIL = std::regex("^Damage: ([0-9\\.\\-]+) \\(Reduction: ([0-9\\.]+) - ([0-9\\.]+) Percentage\\) - Damage (caused|reduced) by ([A-Za-z ]+)$", std::regex::optimize | std::regex::ECMAScript);
+		const std::regex MATCH_RX_DAMAGE_HIT_PART_END = std::regex("^Results of this target: Damage ([0-9\\.\\-]+) \\(Reduction: ([0-9\\.]+) - ([0-9\\.]+) Percentage\\) \\- ResistanceCap: ([0-9\\.]+)!$", std::regex::optimize | std::regex::ECMAScript);
 
 		OnNewCharacterSystemFunc _onNewCharacterSystem;
 		OnNewDamageHitFunc _onNewDamageHit;
@@ -37,8 +37,7 @@ namespace nclog
 	public:
 		CharacterLogParser(
 			OnNewCharacterSystemFunc charSys,
-			OnNewDamageHitFunc dmgHit
-		)
+			OnNewDamageHitFunc dmgHit)
 			: _onNewCharacterSystem(charSys)
 			, _onNewDamageHit(dmgHit)
 		{
@@ -154,7 +153,7 @@ namespace nclog
 	private:
 		void trimRight(std::string& line)
 		{
-			char trimchars[3] = { '\n', '\r', ' ' };
+			char trimchars[3] = {'\n', '\r', ' '};
 			line.erase(line.find_last_not_of(trimchars, std::string::npos, sizeof(trimchars)) + 1);
 		}
 

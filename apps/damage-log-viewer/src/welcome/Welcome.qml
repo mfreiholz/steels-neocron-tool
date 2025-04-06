@@ -1,9 +1,9 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
-import QtQuick.Dialogs 1.3
-import QtQuick.Controls.Universal 2.12
+import QtQuick
+import QtQuick.Window
+import QtQuick.Layouts
+import QtQuick.Controls
+import QtQuick.Dialogs
+import QtQuick.Controls.Universal
 
 /*
 	Shows Neocron directory selection + Tiles.
@@ -71,15 +71,11 @@ Item {
 				}
 			}
 		}
-		FileDialog {
+		FolderDialog {
 			id: gameDirFileDialog
 			visible: false
-			selectExisting: true
-			selectFolder: true
-			selectMultiple: false
 			onAccepted: {
-				console.log(gameDirFileDialog.fileUrl)
-				var folderPath = app.urlLocalFile(gameDirFileDialog.fileUrl)
+				var folderPath = app.urlLocalFile(gameDirFileDialog.selectedFolder)
 				app.gameDirectoryPath = folderPath
 			}
 		}

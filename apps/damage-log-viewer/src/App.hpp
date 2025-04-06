@@ -1,18 +1,18 @@
 #pragma once
-#include <QDebug>
-#include <QObject>
-#include <QCoreApplication>
-#include <QMetaType>
-#include <QUrl>
-#include <QGuiApplication>
+#include "ncloglib/DamageHit.hpp"
 #include <QClipboard>
+#include <QCoreApplication>
+#include <QDebug>
 #include <QDir>
-#include <QFileInfo>
 #include <QFile>
-#include <QTextStream>
-#include <QRegExp>
+#include <QFileInfo>
+#include <QGuiApplication>
+#include <QMetaType>
+#include <QObject>
+#include <QRegularExpression>
 #include <QSettings>
-#include <ncloglib/DamageHit.hpp>
+#include <QTextStream>
+#include <QUrl>
 
 class App : public QObject
 {
@@ -73,7 +73,7 @@ public:
 				{
 					_damageLogFiles.append(info.absoluteFilePath());
 				}
-				else if (info.isFile() && QRegExp("(.*)_([0-9]{2})\\.log").exactMatch(info.fileName()))
+				else if (info.isFile() && QRegularExpression("(.*)_([0-9]{2})\\.log").match(info.fileName()).hasMatch())
 				{
 					_characterLogFiles.append(info.absoluteFilePath());
 				}
