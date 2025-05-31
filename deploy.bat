@@ -1,10 +1,10 @@
 @ECHO OFF
 REM call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 REM call "%VS140COMNTOOLS%\vsvars32.bat"
-SET MyQtDir=D:\Qt\5.15.1\msvc2019_64
-SET MyBuildDir=D:\Projects\NeocronLogParser\Source\build-neocron-log-parser-Desktop_Qt_5_15_1_MSVC2019_64bit-Release
+SET MyQtDir=D:\Development\C_Workspace\thirdparty\qt\6.8.0\msvc2022_64
+SET MyBuildDir=D:\Development\C_Workspace\steels-neocron-tool\build\Desktop_Qt_6_8_0_MSVC2022_64bit-RelWithDebInfo
 SET MyInstallDir=%~dp0\install
-SET MyRedistDir=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.28.29325\x64\Microsoft.VC142.CRT
+SET MyRedistDir=C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Redist\MSVC\14.42.34433\x64\Microsoft.VC143.CRT
 
 ECHO ---------- BEGIN [Clean Up]
 ECHO Clean Up?
